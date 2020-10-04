@@ -43,13 +43,18 @@ public class UnoWorkout {
         fakeCard.b = 'B';
 
         cardArray = addTo(cardArray, fakeCard); //add cards to the bottom of the deck
-        cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck
-
-        System.out.println("\nNew Deck: ");
-        displayDeck(cardArray);
-
-        showHand(cardArray, p);
-        updateHand(player,cardArray,p);
+        
+        int z=1;
+        while(z!=0)
+        {
+           cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck
+           System.out.println("\nNew Deck: ");
+           displayDeck(cardArray);
+           showHand(cardArray, p);
+           updateHand(player,cardArray,p);
+           System.out.println("\n1. Proceed... (Exit = 0)");
+           z = sc.nextInt();
+        }
         
         
          
@@ -115,20 +120,25 @@ public class UnoWorkout {
             }
             return newArray;
         } catch (Exception e) {
-            System.out.println("Out of cards");
+            System.out.println("Out of cards 3. Start Again");
             return cardArray;
         }
     }
     public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
-       
-       for(int j=0; j<numberOfPlayers;j++){
-             for(int i=j*7; i<(player[j].b.length +j*7);i++){
-                  player[j].b[i%7]=cardArray[i].a;
-                  System.out.print(cardArray[i].b);
-                  player[j].c[i%7]=cardArray[i].b;
-             }
+       try {
+          for(int j=0; j<numberOfPlayers;j++){
+                for(int i=j*7; i<(player[j].b.length +j*7);i++){
+                     player[j].b[i%7]=cardArray[i].a;
+                     //System.out.print(cardArray[i].b);
+                     player[j].c[i%7]=cardArray[i].b;
+                }
+          }
+          return player;
        }
-       return player;
+       catch (Exception e) {
+            System.out.println("Out of cards! 3. Start Again");
+            return player;
+        }
     }
     
 }

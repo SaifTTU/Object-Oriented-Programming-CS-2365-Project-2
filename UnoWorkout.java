@@ -113,17 +113,14 @@ public class UnoWorkout {
 class Card{
    int a;
    char b;
-   
    public void setData(int c,char d){
       a=c;
       b=d;
    }
-   
    public void showData(){
    System.out.print(a);
    System.out.print(b+", ");
  }
-
 }
 
 class player{

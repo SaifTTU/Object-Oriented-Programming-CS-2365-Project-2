@@ -14,13 +14,13 @@ public class UnoWorkout {
       numberOfCards = numberOfCards*d;
       
       Card cardArray[] = new Card[numberOfCards];
+      Player player[] = new Player[p]; //number of players
+      
       for(int i=0; i<cardArray.length;i++){ 
          cardArray[i] = new Card();
          cardArray[i].setData(i,'R');
-         System.out.print(cardArray[i].a+", ");
-         
-      }
-   
+         System.out.print(cardArray[i].a+", ");   
+      }  
       for(int i=0; i<cardArray.length;i++){ 
          cardArray[i].showData(); //use this to show whats on one card
       }
@@ -28,6 +28,7 @@ public class UnoWorkout {
       displayDeck(cardArray); //use this to display what the current deck looks like
       
       showHand(cardArray, p); //
+      
       
       Card fakeCard = new Card();
       fakeCard.a=2;
@@ -42,30 +43,26 @@ public class UnoWorkout {
       showHand(cardArray, p);
       
     }
-    
     public static void displayDeck(Card[] cardArray){
       for(int i=0; i<cardArray.length;i++){ 
          cardArray[i].showData();
       }
     }
-    
     public static void showHand(Card[] cardArray, int players){
       for(int j=1; j<=players;j++){
           if(players>=j)
           try{
             System.out.print("\nPlayer "+ j+"'s Hand: ");
             for(int i=((j-1)*7); i<(7*j);i++){ 
+               
                System.out.print((cardArray[i].a)+""+(cardArray[i].b)+", ");
             }
           }
           catch(Exception e){
                System.out.println("Not enough cards..");    
-          
           }
-      }
-               
+      }      
     }
-    
     public static Card[] shuffleDeck(Card[] cardArray){
       List<Card> cardList = Arrays.asList(cardArray); //card Array to to cardList, shuffled and then back to Array 
 
@@ -77,7 +74,6 @@ public class UnoWorkout {
       
       return cardArray; 
     }
-    
    
    public static Card[] addTo(Card[] cardArray, Card fakeCard){
       System.out.println("\nAdding fake card with values " + fakeCard.a + " and "+fakeCard.b+" to the back of the deck");  
@@ -113,17 +109,23 @@ public class UnoWorkout {
 class Card{
    int a;
    char b;
+   
    public void setData(int c,char d){
       a=c;
       b=d;
    }
+   
    public void showData(){
    System.out.print(a);
    System.out.print(b+", ");
  }
+
 }
 
-class player{
-   int a; //player number
-   Card[] b = new Card[7]; //list of cards
+class Player{
+   int e; //player number
+   Card[] f= new Card[7]; //list of cards
+   
 }
+
+

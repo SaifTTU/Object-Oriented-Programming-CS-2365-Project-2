@@ -9,7 +9,6 @@ public class UnoWorkout {
       int p = sc.nextInt();  // Read user input
       System.out.println("Number of players: " + p);  // Output user input
       
-      
       int numberOfCards = 108;
       
       numberOfCards = numberOfCards*d;
@@ -21,8 +20,7 @@ public class UnoWorkout {
          System.out.print(cardArray[i].a+", ");
          
       }
-
-         
+   
       for(int i=0; i<cardArray.length;i++){ 
          cardArray[i].showData(); //use this to show whats on one card
       }
@@ -104,15 +102,12 @@ public class UnoWorkout {
             newArray[i]=cardArray[i+amountToRemove];
          }
          return newArray;
-
       }
       catch(Exception e){
          System.out.println("Out of cards");
          return cardArray;
-
       }
    } 
-
 }
 
 class Card{
@@ -132,3 +127,6 @@ class Card{
 }
 
 class player{
+   int a; //player number
+   Card[] b = new Card[7]; //list of cards
+}

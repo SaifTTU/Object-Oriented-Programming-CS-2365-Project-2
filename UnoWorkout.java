@@ -1,26 +1,36 @@
 import java.util.*;
-public class UnoWorkout {
+public class UnoWorkoutTest {
     public static void main(String[] args) {
+    
+        Card fakeCardArray[] = new Card[384];
+        fakeCardArray=createDeck(3, fakeCardArray); 
+        
+         
         Scanner sc = new Scanner(System.in); // Create a Scanner object
-        System.out.println("How many decks?");
+        System.out.println("\nHow many decks?");
         int d = sc.nextInt(); // Read user input
         System.out.println("Number of Decks: " + d); // Output user input
         System.out.println("How many players?");
         int p = sc.nextInt(); // Read user input
         System.out.println("Number of players: " + p); // Output user input
 
-        int numberOfCards = 108;
+        int numberOfCards = 116;
         int numberOfPlayers = 1;
         
         numberOfCards = numberOfCards * d;
         numberOfPlayers = numberOfPlayers * p;
-
+        
+        
         Card cardArray[] = new Card[numberOfCards];
+        System.out.println("\nThe number of cards: "+cardArray.length);
+        cardArray=createDeck(d, cardArray);
+        System.out.println("\nThe number of cards: "+cardArray.length);
+        
         Player player[] = new Player[numberOfPlayers]; //number of players
 
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i] = new Card();
-            cardArray[i].setData(i, 'R');
+            cardArray[i].setData(fakeCardArray[i/d].a, fakeCardArray[i/(d)].b);
             System.out.print(cardArray[i].a + ", ");
 
         }
@@ -52,7 +62,7 @@ public class UnoWorkout {
            displayDeck(cardArray);
            showHand(cardArray, p);
            updateHand(player,cardArray,p);
-           showWorkOut(player); 
+           showWorkOut(player);
            System.out.println("\n1. Proceed... (Exit = 0)");
            z = sc.nextInt();
         }
@@ -125,6 +135,7 @@ public class UnoWorkout {
             return cardArray;
         }
     }
+    
     public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
        try {
           for(int j=0; j<numberOfPlayers;j++){
@@ -175,6 +186,29 @@ public class UnoWorkout {
          }
     }
     
+    public static Card[] createDeck(int d, Card[] cardArray){
+         int a[] ={0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,15};
+         char b[] ={'B','Y','R','G'};
+         int numberOfDecks=d;
+         
+         Card oneDeck[]=new Card[a.length*4];
+         Card card[]=new Card[a.length*4*numberOfDecks];
+         for(int j=0; j<numberOfDecks;j++){
+               System.out.println("\nDeck: "+(j+1));
+               for(int i=0;i<oneDeck.length;i++){
+                  oneDeck[i] = new Card();
+                  card[i*j] = new Card();
+                  //for(int j=0;j<4;j++){
+                  oneDeck[i].setData(a[i%29],b[i/29]);
+                  //System.out.print(oneDeck[i].a+""+oneDeck[i].b+", ");
+                  card[i*j]=oneDeck[i];
+                  System.out.print(card[i*j].a+""+card[i*j].b+", ");
+               }
+            }
+         cardArray=card;
+         return cardArray;
+    }
+    
 }
 
 class Card {
@@ -199,7 +233,6 @@ class Player {
     char c[] = new char[7]; //card array with color chars
 
 }
-
 
 
 

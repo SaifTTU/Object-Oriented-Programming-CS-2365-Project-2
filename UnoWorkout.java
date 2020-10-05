@@ -52,6 +52,7 @@ public class UnoWorkout {
            displayDeck(cardArray);
            showHand(cardArray, p);
            updateHand(player,cardArray,p);
+           showWorkOut(player); 
            System.out.println("\n1. Proceed... (Exit = 0)");
            z = sc.nextInt();
         }

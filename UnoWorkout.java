@@ -88,11 +88,11 @@ public class UnoWorkoutTest {
                         if((cardArray[i].a)<=10)
                            System.out.print((cardArray[i].a) + "" + (cardArray[i].b) + ", ");
                         else if((cardArray[i].a)==11) //E is for reverse (because R was already taken)
-                           System.out.print("[Reverse]"+(cardArray[i].b) +", ");
-                        else if((cardArray[i].a)==13) 
                            System.out.print("[Skip]"+(cardArray[i].b) +", ");
                         else if((cardArray[i].a)==12) 
                            System.out.print("[D2]"+(cardArray[i].b) +", ");
+                        else if((cardArray[i].a)==13) 
+                           System.out.print("[Reverse]"+(cardArray[i].b) +", ");
                         else if((cardArray[i].a)==14) 
                            System.out.print("[WILD], ");
                         else if((cardArray[i].a)==15) 

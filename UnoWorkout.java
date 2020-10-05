@@ -30,7 +30,7 @@ public class UnoWorkoutTest {
 
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i] = new Card();
-            cardArray[i].setData(fakeCardArray[i/d].a, fakeCardArray[i/(d)].b);
+            cardArray[i].setData(fakeCardArray[i%(d*29)].a, fakeCardArray[i/(d)].b);
             System.out.print(cardArray[i].a + ", ");
 
         }
@@ -85,8 +85,18 @@ public class UnoWorkoutTest {
                 try {
                     System.out.print("\nPlayer " + j + "'s Hand: ");
                     for (int i = ((j - 1) * 7); i < (7 * j); i++) {
-
-                        System.out.print((cardArray[i].a) + "" + (cardArray[i].b) + ", ");
+                        if((cardArray[i].a)<=10)
+                           System.out.print((cardArray[i].a) + "" + (cardArray[i].b) + ", ");
+                        else if((cardArray[i].a)==11) //E is for reverse (because R was already taken)
+                           System.out.print("[Reverse]"+(cardArray[i].b) +", ");
+                        else if((cardArray[i].a)==13) 
+                           System.out.print("[Skip]"+(cardArray[i].b) +", ");
+                        else if((cardArray[i].a)==12) 
+                           System.out.print("[D2]"+(cardArray[i].b) +", ");
+                        else if((cardArray[i].a)==14) 
+                           System.out.print("[WILD], ");
+                        else if((cardArray[i].a)==15) 
+                           System.out.print("[WILD D4], ");
                     }
                 }
             catch (Exception e) {
@@ -202,7 +212,46 @@ public class UnoWorkoutTest {
                   oneDeck[i].setData(a[i%29],b[i/29]);
                   //System.out.print(oneDeck[i].a+""+oneDeck[i].b+", ");
                   card[i*j]=oneDeck[i];
-                  System.out.print(card[i*j].a+""+card[i*j].b+", ");
+                  if((card[i*j].a)<=10)
+                     System.out.print(card[i*j].a+""+card[i*j].b+", ");
+                        
+                  
+                  
+                  if(card[i*j].a==11){//setup the skip card
+                     //card[i*j].a=0;
+                     card[i*j].b=Character.toLowerCase(card[i*j].b);
+                     System.out.print(card[i*j].b+"[Skip], ");
+                     
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].a==12){//setup the draw 2 card
+                     //card[i*j].a=0;
+                     //card[i*j].b='D';
+                     card[i*j].b=Character.toLowerCase(card[i*j].b);
+                     System.out.print(card[i*j].b+"[D2], ");
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].a==13){//setup the reverse card
+                     //card[i*j].a=0;
+                     //card[i*j].b='E';
+                     card[i*j].b=Character.toLowerCase(card[i*j].b);
+                     System.out.print(card[i*j].b+"[Reverse], ");
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].a==14){//setup the wild card
+                     //card[i*j].a=0;
+                     System.out.print("[WILD], ");
+                     card[i*j].b='W';
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].a==15){//setup the wild card
+                     card[i*j].b='F';
+                     System.out.print("[WILD D4], ");
+                     card[i*j].actionCard =true;
+                  }
+                  
+                  //E is for reverse (because R was already taken)
+
                }
             }
          cardArray=card;
@@ -214,6 +263,7 @@ public class UnoWorkoutTest {
 class Card {
     int a;
     char b;
+    boolean actionCard =false;
 
     public void setData(int c, char d) {
         a = c;
@@ -233,6 +283,3 @@ class Player {
     char c[] = new char[7]; //card array with color chars
 
 }
-
-
-

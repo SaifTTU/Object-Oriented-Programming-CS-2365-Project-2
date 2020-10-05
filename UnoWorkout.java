@@ -141,6 +141,39 @@ public class UnoWorkout {
         }
     }
     
+    public static void showWorkOut(Player[] player){
+         int pushups = 0; //blue
+         int squats = 0; //yellow
+         int situps = 0; //red
+         int lunges = 0; //green
+         for(int i=0; i<player.length;i++){
+               pushups = 0; //blue
+               squats = 0; //yellow
+               situps = 0; //red
+               lunges = 0; //green
+               System.out.println("\nPlayer "+(i+1)+":");
+               for(int j=0; j<player[i].b.length; j++){
+               
+                  if(player[i].c[j]=='R'){
+                        situps = situps + player[i].b[j];
+                     }
+                  if(player[i].c[j]=='B'){
+                        pushups = pushups + player[i].b[j];  
+                     }
+                  if(player[i].c[j]=='Y'){
+                        squats = squats + player[i].b[j];  
+                     }
+                  if(player[i].c[j]=='G'){
+                        lunges = squats + player[i].b[j];  
+                     }
+               }
+               System.out.println("Pushups: "+ pushups );
+               System.out.println("Squats: "+ squats );
+               System.out.println("Situps: "+ situps );
+               System.out.println("Lunges: "+ lunges );
+         }
+    }
+    
 }
 
 class Card {

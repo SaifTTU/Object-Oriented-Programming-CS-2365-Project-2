@@ -7,7 +7,7 @@ public class UnoWorkout {
         initialCardArray=createDeck(3, initialCardArray); 
         
          
-        String[] options = {"3 Decks", "2 Decks","1 Deck"};
+        /*String[] options = {"3 Decks", "2 Decks","1 Deck"};
         
         int x = JOptionPane.showOptionDialog(null, "How many decks?","Number of Decks to Shuffle",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
         int d;
@@ -39,16 +39,16 @@ public class UnoWorkout {
            p=2 ;
         else
            p=1;
-        System.out.println(p);
+        System.out.println(p); */
       
           
     
       Scanner sc = new Scanner(System.in);  // Create a Scanner object
-      //System.out.println("How many decks?");
-      //int d = sc.nextInt();  // Read user input
+      System.out.println("\nHow many decks?");
+      int d = sc.nextInt();  // Read user input
       System.out.println("Number of Decks: " + d);  // Output user input
-      //System.out.println("How many players?");
-      //int p = sc.nextInt();  // Read user input
+      System.out.println("How many players?");
+      int p = sc.nextInt();  // Read user input
       System.out.println("Number of players: " + p);  // Output user input
         int numberOfCards = 116;
         int numberOfPlayers = 1;
@@ -311,6 +311,13 @@ class Card {
         System.out.print(a);
         System.out.print(b + ", ");
     }
+
+}
+
+class Player {
+    int a; //player number
+    int b[] = new int[7]; //card array with numbers
+    char c[] = new char[7]; //card array with color chars
 
 }
 

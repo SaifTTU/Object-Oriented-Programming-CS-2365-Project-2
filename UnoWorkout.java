@@ -6,14 +6,49 @@ public class UnoWorkout {
         initialCardArray=createDeck(3, initialCardArray); 
         
          
-        Scanner sc = new Scanner(System.in); // Create a Scanner object
-        System.out.println("\nHow many decks?");
-        int d = sc.nextInt(); // Read user input
-        System.out.println("Number of Decks: " + d); // Output user input
-        System.out.println("How many players?");
-        int p = sc.nextInt(); // Read user input
-        System.out.println("Number of players: " + p); // Output user input
-
+        String[] options = {"3 Decks", "2 Decks","1 Deck"};
+        
+        int x = JOptionPane.showOptionDialog(null, "How many decks?","Number of Decks to Shuffle",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+        int d;
+        if(x==2)
+           d=1;
+        else if(x==0)
+           d=3;
+        else
+           d=2;
+        System.out.println(d);
+        
+      String[] options2 = {"Together","Separately"};
+        x = JOptionPane.showOptionDialog(null, "Should they be shuffled Separately or Together?",null,JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, null);
+        String s;
+        if(x==1)
+           s="Separately";
+        else
+           s="Together";
+        System.out.println(s);
+        
+      String[] options3 = {"4 Players","3 Players","2 Players","1 Player"};
+        x = JOptionPane.showOptionDialog(null, "How many players?","Number of Players",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options3, null);
+        int p;
+        if(x==3)
+           p=4;
+        else if(x==2)
+           p=3;
+        else if(x==1)
+           p=2 ;
+        else
+           p=1;
+        System.out.println(p);
+      
+          
+    
+      Scanner sc = new Scanner(System.in);  // Create a Scanner object
+      //System.out.println("How many decks?");
+      //int d = sc.nextInt();  // Read user input
+      System.out.println("Number of Decks: " + d);  // Output user input
+      //System.out.println("How many players?");
+      //int p = sc.nextInt();  // Read user input
+      System.out.println("Number of players: " + p);  // Output user input
         int numberOfCards = 116;
         int numberOfPlayers = 1;
         

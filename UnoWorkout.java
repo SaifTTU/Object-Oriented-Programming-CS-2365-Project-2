@@ -31,7 +31,7 @@ public class UnoWorkout {
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i] = new Card();
             cardArray[i].setData(fakeCardArray[i%(d*29)].val, fakeCardArray[i/(d)].col);
-            System.out.print(cardArray[i].val + ", ");
+            System.out.print(cardArray[i].val + ", "+cardArray[i].col);
 
         }
         
@@ -60,8 +60,9 @@ public class UnoWorkout {
            cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck
            System.out.println("\nNew Deck: ");
            displayDeck(cardArray);
-           showHand(cardArray, p);
            updateHand(player,cardArray,p);
+           showHand(cardArray, p);
+           player=sortHand(player);
            showWorkOut(player);
            System.out.println("\n1. Proceed... (Exit = 0)");
            z = sc.nextInt();
@@ -117,6 +118,47 @@ public class UnoWorkout {
         System.out.println("\nShuffling deck... ");
 
         return cardArray;
+    }
+    
+    public static Player[] sortHand(Player[] player) {  
+        int n = 7;  
+        int temp = 0; 
+        char tempChar = 'B'; 
+            for(int k=0;k<player.length;k++){
+            
+               for(int i=0; i < n; i++){  //sorting colors
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].col[j-1] > player[k].col[j]){  
+                                        
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;  
+                               }  
+                                
+                       }  
+               }
+              
+               for(int i=0; i < n; i++){  //sorting numbers
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].val[j-1] > player[k].val[j]){  
+                                        
+                                       temp = player[k].val[j-1];  
+                                       player[k].val[j-1] = player[k].val[j];  
+                                       player[k].val[j] = temp;  
+                               }  
+                                
+                       }  
+               }
+               System.out.print("\nNew Player "+(k+1)+"'s Hand: ");
+               for(int i=0; i < player.length; i++){
+                     for(int j=0; j < n; j++){ 
+                           System.out.print(" "+player[k].val[j]+""+player[k].col[j]);
+                     }
+               } 
+               
+          }
+          return player;
+  
     }
 
     public static Card[] addTo(Card[] cardArray, Card fakeCard) {
@@ -284,20 +326,27 @@ class Card {
         return col;
     }
     
-    public void colText()
+    String colText;
+    public String colText()
     {
         switch(col){
             case 'R':
-                System.out.print("Red");
+                //System.out.print("Red");
+                colText=("Red");
             case 'B':
-                System.out.print("Blue");
+                //System.out.print("Blue");
+                colText=("Blue");
             case 'Y':
-                System.out.print("Yellow");
+                //System.out.print("Yellow");
+                colText=("Yellow");
             case 'G':
-                System.out.print("Green");
+                //System.out.print("Green");
+                colText=("Green");
             default:
-                System.out.print("black");
+                //System.out.print("black");
+                colText=("black");
         }
+        return colText;
     }
     
     public void showData() {

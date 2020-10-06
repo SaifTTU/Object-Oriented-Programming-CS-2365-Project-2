@@ -1,55 +1,19 @@
 import java.util.*;
-import javax.swing.*;
 public class UnoWorkout {
     public static void main(String[] args) {
     
-        Card initialCardArray[] = new Card[384];
-        initialCardArray=createDeck(3, initialCardArray); 
+        Card fakeCardArray[] = new Card[384];
+        fakeCardArray=createDeck(3, fakeCardArray); 
         
          
-        /*String[] options = {"3 Decks", "2 Decks","1 Deck"};
-        
-        int x = JOptionPane.showOptionDialog(null, "How many decks?","Number of Decks to Shuffle",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
-        int d;
-        if(x==2)
-           d=1;
-        else if(x==0)
-           d=3;
-        else
-           d=2;
-        System.out.println(d);
-        
-      String[] options2 = {"Together","Separately"};
-        x = JOptionPane.showOptionDialog(null, "Should they be shuffled Separately or Together?",null,JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, null);
-        String s;
-        if(x==1)
-           s="Separately";
-        else
-           s="Together";
-        System.out.println(s);
-        
-      String[] options3 = {"4 Players","3 Players","2 Players","1 Player"};
-        x = JOptionPane.showOptionDialog(null, "How many players?","Number of Players",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options3, null);
-        int p;
-        if(x==3)
-           p=4;
-        else if(x==2)
-           p=3;
-        else if(x==1)
-           p=2 ;
-        else
-           p=1;
-        System.out.println(p); */
-      
-          
-    
-      Scanner sc = new Scanner(System.in);  // Create a Scanner object
-      System.out.println("\nHow many decks?");
-      int d = sc.nextInt();  // Read user input
-      System.out.println("Number of Decks: " + d);  // Output user input
-      System.out.println("How many players?");
-      int p = sc.nextInt();  // Read user input
-      System.out.println("Number of players: " + p);  // Output user input
+        Scanner sc = new Scanner(System.in); // Create a Scanner object
+        System.out.println("\nHow many decks?");
+        int d = sc.nextInt(); // Read user input
+        System.out.println("Number of Decks: " + d); // Output user input
+        System.out.println("How many players?");
+        int p = sc.nextInt(); // Read user input
+        System.out.println("Number of players: " + p); // Output user input
+
         int numberOfCards = 116;
         int numberOfPlayers = 1;
         
@@ -66,8 +30,8 @@ public class UnoWorkout {
 
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i] = new Card();
-            cardArray[i].setData(initialCardArray[i%(d*29)].a, initialCardArray[i/(d)].b);
-            System.out.print(cardArray[i].a + ", ");
+            cardArray[i].setData(fakeCardArray[i%(d*29)].val, fakeCardArray[i/(d)].col);
+            System.out.print(cardArray[i].val + ", ");
 
         }
         
@@ -84,11 +48,11 @@ public class UnoWorkout {
         showHand(cardArray, p); //
 
 
-        //Card fakeCard = new Card();
-        //fakeCard.a = 2;
-        //fakeCard.b = 'B';
+        Card fakeCard = new Card();
+        fakeCard.val = 2;
+        fakeCard.col = 'B';
 
-        //cardArray = addTo(cardArray, fakeCard); //add cards to the bottom of the deck
+        cardArray = addTo(cardArray, fakeCard); //add cards to the bottom of the deck
         
         int z=1;
         while(z!=0)
@@ -121,17 +85,17 @@ public class UnoWorkout {
                 try {
                     System.out.print("\nPlayer " + j + "'s Hand: ");
                     for (int i = ((j - 1) * 7); i < (7 * j); i++) {
-                        if((cardArray[i].a)<=10)
-                           System.out.print((cardArray[i].a) + "" + (cardArray[i].b) + ", ");
-                        if((cardArray[i].a)==11) //E is for reverse (because R was already taken)
-                           System.out.print("[Skip]"+(cardArray[i].b) +", ");
-                        if((cardArray[i].a)==12) 
-                           System.out.print("[D2]"+(cardArray[i].b) +", ");
-                        if((cardArray[i].a)==13) 
-                           System.out.print("[Reverse]"+(cardArray[i].b) +", ");
-                        if((cardArray[i].a)==14) 
+                        if((cardArray[i].val)<=10)
+                           System.out.print((cardArray[i].val) + "" + (cardArray[i].col) + ", ");
+                        if((cardArray[i].val)==11) //E is for reverse (because R was already taken)
+                           System.out.print("[Skip]"+(cardArray[i].col) +", ");
+                        if((cardArray[i].val)==12) 
+                           System.out.print("[D2]"+(cardArray[i].col) +", ");
+                        if((cardArray[i].val)==13) 
+                           System.out.print("[Reverse]"+(cardArray[i].col) +", ");
+                        if((cardArray[i].val)==14) 
                            System.out.print("[WILD], ");
-                        if((cardArray[i].a)==15) 
+                        if((cardArray[i].val)==15) 
                            System.out.print("[WILD D4], ");
                     }
                 }
@@ -139,15 +103,6 @@ public class UnoWorkout {
                 System.out.println("Not enough cards..");
             }
         }
-    }
-    
-    public static Card[] sortHand(Player[] player){
-         Card[] playerHand = new Card[7];
-         for(int i=0; i<playerHand.length;i++){
-               playerHand[i] = new Card();
-         }
-         return playerHand;
-
     }
 
     public static Card[] shuffleDeck(Card[] cardArray) {
@@ -162,13 +117,13 @@ public class UnoWorkout {
         return cardArray;
     }
 
-    public static Card[] addTo(Card[] cardArray, Card newCard) {
-        System.out.println("\nAdding card with values " + newCard.a + " and " + newCard.b + " to the back of the deck");
+    public static Card[] addTo(Card[] cardArray, Card fakeCard) {
+        System.out.println("\nAdding fake card with values " + fakeCard.val + " and " + fakeCard.col + " to the back of the deck");
         Card[] newArray = new Card[cardArray.length + 1];
         for (int i = 0; i < cardArray.length; i++) {
             newArray[i] = cardArray[i];
         }
-        newArray[cardArray.length] = newCard;
+        newArray[cardArray.length] = fakeCard;
         return newArray;
     }
 
@@ -179,7 +134,7 @@ public class UnoWorkout {
         try {
             Card[] newArray = new Card[cardArray.length - amountToRemove];
             for (int i = 0; i < amountToRemove; i++) {
-                System.out.print((cardArray[i].a) + "" + (cardArray[i].b) + ", ");
+                System.out.print((cardArray[i].val) + "" + (cardArray[i].col) + ", ");
             }
             for (int i = 0; i < newArray.length; i++) {
                 newArray[i] = cardArray[i + amountToRemove];
@@ -194,10 +149,10 @@ public class UnoWorkout {
     public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
        try {
           for(int j=0; j<numberOfPlayers;j++){
-                for(int i=j*7; i<(player[j].b.length +j*7);i++){
-                     player[j].b[i%7]=cardArray[i].a;
-                     //System.out.print(cardArray[i].b);
-                     player[j].c[i%7]=cardArray[i].b;
+                for(int i=j*7; i<(player[j].col.length +j*7);i++){
+                     player[j].val[i%7]=cardArray[i].val;
+                     //System.out.print(cardArray[i].col);
+                     player[j].val[i%7]=cardArray[i].col;
                 }
           }
           return player;
@@ -219,19 +174,19 @@ public class UnoWorkout {
                situps = 0; //red
                lunges = 0; //green
                System.out.println("\nPlayer "+(i+1)+":");
-               for(int j=0; j<player[i].b.length; j++){
-                  if(player[i].b[j]<11){
-                     if(player[i].c[j]=='R'){
-                           situps = situps + player[i].b[j];
+               for(int j=0; j<player[i].col.length; j++){
+                  if(player[i].col[j]<11){
+                     if(player[i].col[j]=='R'){
+                           situps = situps + player[i].col[j];
                         }
-                     if(player[i].c[j]=='B'){
-                           pushups = pushups + player[i].b[j];  
+                     if(player[i].col[j]=='B'){
+                           pushups = pushups + player[i].col[j];  
                         }
-                     if(player[i].c[j]=='Y'){
-                           squats = squats + player[i].b[j];  
+                     if(player[i].col[j]=='Y'){
+                           squats = squats + player[i].col[j];  
                         }
-                     if(player[i].c[j]=='G'){
-                           lunges = squats + player[i].b[j];  
+                     if(player[i].col[j]=='G'){
+                           lunges = squats + player[i].col[j];  
                         }
                   }
                }
@@ -256,42 +211,42 @@ public class UnoWorkout {
                   card[i*j] = new Card();
                   //for(int j=0;j<4;j++){
                   oneDeck[i].setData(a[i%29],b[i/29]);
-                  //System.out.print(oneDeck[i].a+""+oneDeck[i].b+", ");
+                  //System.out.print(oneDeck[i].a+""+oneDeck[i].col+", ");
                   card[i*j]=oneDeck[i];
-                  if((card[i*j].a)<=10)
-                     System.out.print(card[i*j].a+""+card[i*j].b+", ");
+                  if((card[i*j].val)<=10)
+                     System.out.print(card[i*j].val+""+card[i*j].col+", ");
                         
                   
                   
-                  if(card[i*j].a==11){//setup the skip card
+                  if(card[i*j].val==11){//setup the skip card
                      //card[i*j].a=0;
-                     //card[i*j].b=Character.toLowerCase(card[i*j].b);
-                     System.out.print(card[i*j].b+"[Skip], ");
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
+                     System.out.print(card[i*j].col+"[Skip], ");
                      
                      card[i*j].actionCard =true;
                   }
-                  if(card[i*j].a==12){//setup the draw 2 card
+                  if(card[i*j].val==12){//setup the draw 2 card
                      //card[i*j].a=0;
-                     //card[i*j].b='D';
-                     //card[i*j].b=Character.toLowerCase(card[i*j].b);
-                     System.out.print(card[i*j].b+"[D2], ");
+                     //card[i*j].col='D';
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
+                     System.out.print(card[i*j].col+"[D2], ");
                      card[i*j].actionCard =true;
                   }
-                  if(card[i*j].a==13){//setup the reverse card
+                  if(card[i*j].val==13){//setup the reverse card
                      //card[i*j].a=0;
-                     //card[i*j].b='E';
-                     //card[i*j].b=Character.toLowerCase(card[i*j].b);
-                     System.out.print(card[i*j].b+"[Reverse], ");
+                     //card[i*j].col='E';
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
+                     System.out.print(card[i*j].col+"[Reverse], ");
                      card[i*j].actionCard =true;
                   }
-                  if(card[i*j].a==14){//setup the wild card
+                  if(card[i*j].val==14){//setup the wild card
                      //card[i*j].a=0;
                      System.out.print("[WILD], ");
-                     card[i*j].b='W';
+                     card[i*j].col='W';
                      card[i*j].actionCard =true;
                   }
-                  if(card[i*j].a==15){//setup the wild card
-                     card[i*j].b='F';
+                  if(card[i*j].val==15){//setup the wild card
+                     card[i*j].col='F';
                      System.out.print("[WILD D4], ");
                      card[i*j].actionCard =true;
                   }
@@ -307,33 +262,51 @@ public class UnoWorkout {
 }
 
 class Card {
-    int a;
-    char b;
+    int val;
+    char col;
     boolean actionCard =false;
 
     public void setData(int c, char d) {
-        a = c;
-        b = d;
+        val = c;
+        col = d;
     }
 
+    public int showValue()
+    {
+       return val; 
+    }
+    
+    public char showColor()
+    {
+        return col;
+    }
+    
+    public void colText()
+    {
+        switch(col){
+            case 'R':
+                System.out.print("Red");
+            case 'B':
+                System.out.print("Blue");
+            case 'Y':
+                System.out.print("Yellow");
+            case 'G':
+                System.out.print("Green");
+            default:
+                System.out.print("black");
+        }
+    }
+    
     public void showData() {
-        System.out.print(a);
-        System.out.print(b + ", ");
+        System.out.print(val);
+        System.out.print(col + ", ");
     }
 
 }
 
 class Player {
     int a; //player number
-    int b[] = new int[7]; //card array with numbers
-    char c[] = new char[7]; //card array with color chars
-    
-    Card[] playerHand = new Card[7];
-    
-    Player(){
-         for(int i=0;i<playerHand.length;i++){
-               playerHand[i]=new Card();
-         }
-    }
+    int val[] = new int[7]; //card array with numbers
+    char col[] = new char[7]; //card array with color chars
 
 }

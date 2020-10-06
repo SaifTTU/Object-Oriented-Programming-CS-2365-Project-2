@@ -48,11 +48,11 @@ public class UnoWorkout {
         showHand(cardArray, p); //
 
 
-        Card fakeCard = new Card();
-        fakeCard.a = 2;
-        fakeCard.b = 'B';
+        //Card fakeCard = new Card();
+        //fakeCard.a = 2;
+        //fakeCard.b = 'B';
 
-        cardArray = addTo(cardArray, fakeCard); //add cards to the bottom of the deck
+        //cardArray = addTo(cardArray, fakeCard); //add cards to the bottom of the deck
         
         int z=1;
         while(z!=0)
@@ -117,13 +117,13 @@ public class UnoWorkout {
         return cardArray;
     }
 
-    public static Card[] addTo(Card[] cardArray, Card fakeCard) {
-        System.out.println("\nAdding fake card with values " + fakeCard.a + " and " + fakeCard.b + " to the back of the deck");
+    public static Card[] addTo(Card[] cardArray, Card newCard) {
+        System.out.println("\nAdding card with values " + newCard.a + " and " + newCard.b + " to the back of the deck");
         Card[] newArray = new Card[cardArray.length + 1];
         for (int i = 0; i < cardArray.length; i++) {
             newArray[i] = cardArray[i];
         }
-        newArray[cardArray.length] = fakeCard;
+        newArray[cardArray.length] = newCard;
         return newArray;
     }
 

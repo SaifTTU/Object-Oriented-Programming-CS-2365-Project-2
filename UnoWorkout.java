@@ -262,15 +262,41 @@ public class UnoWorkout {
 }
 
 class Card {
-    int a;
-    char b;
+    int val;
+    char col;
     boolean actionCard =false;
 
     public void setData(int c, char d) {
-        a = c;
-        b = d;
+        val = c;
+        col = d;
     }
 
+    public int showValue()
+    {
+       return val; 
+    }
+    
+    public char showColor()
+    {
+        return col;
+    }
+    
+    public void colText()
+    {
+        switch(col){
+            case r:
+                System.out.print("Red");
+            case b:
+                System.out.print("Blue");
+            case y:
+                System.out.print("Yellow");
+            case g:
+                System.out.print("Green");
+            default:
+                System.out.print("black");
+        }
+    }
+    
     public void showData() {
         System.out.print(a);
         System.out.print(b + ", ");

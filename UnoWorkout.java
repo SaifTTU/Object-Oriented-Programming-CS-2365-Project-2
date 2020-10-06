@@ -140,6 +140,15 @@ public class UnoWorkout {
             }
         }
     }
+    
+    public static Card[] sortHand(Player[] player){
+         Card[] playerHand = new Card[7];
+         for(int i=0; i<playerHand.length;i++){
+               playerHand[i] = new Card();
+         }
+         return playerHand;
+
+    }
 
     public static Card[] shuffleDeck(Card[] cardArray) {
         List < Card > cardList = Arrays.asList(cardArray); //card Array to to cardList, shuffled and then back to Array 
@@ -318,12 +327,13 @@ class Player {
     int a; //player number
     int b[] = new int[7]; //card array with numbers
     char c[] = new char[7]; //card array with color chars
-
-}
-
-class Player {
-    int a; //player number
-    int b[] = new int[7]; //card array with numbers
-    char c[] = new char[7]; //card array with color chars
+    
+    Card[] playerHand = new Card[7];
+    
+    Player(){
+         for(int i=0;i<playerHand.length;i++){
+               playerHand[i]=new Card();
+         }
+    }
 
 }

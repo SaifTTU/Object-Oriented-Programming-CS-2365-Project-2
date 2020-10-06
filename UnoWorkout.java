@@ -1,5 +1,5 @@
 import java.util.*;
-public class UnoWorkoutTest {
+public class UnoWorkout {
     public static void main(String[] args) {
     
         Card fakeCardArray[] = new Card[384];
@@ -87,15 +87,15 @@ public class UnoWorkoutTest {
                     for (int i = ((j - 1) * 7); i < (7 * j); i++) {
                         if((cardArray[i].a)<=10)
                            System.out.print((cardArray[i].a) + "" + (cardArray[i].b) + ", ");
-                        else if((cardArray[i].a)==11) //E is for reverse (because R was already taken)
+                        if((cardArray[i].a)==11) //E is for reverse (because R was already taken)
                            System.out.print("[Skip]"+(cardArray[i].b) +", ");
-                        else if((cardArray[i].a)==12) 
+                        if((cardArray[i].a)==12) 
                            System.out.print("[D2]"+(cardArray[i].b) +", ");
-                        else if((cardArray[i].a)==13) 
+                        if((cardArray[i].a)==13) 
                            System.out.print("[Reverse]"+(cardArray[i].b) +", ");
-                        else if((cardArray[i].a)==14) 
+                        if((cardArray[i].a)==14) 
                            System.out.print("[WILD], ");
-                        else if((cardArray[i].a)==15) 
+                        if((cardArray[i].a)==15) 
                            System.out.print("[WILD D4], ");
                     }
                 }
@@ -175,19 +175,20 @@ public class UnoWorkoutTest {
                lunges = 0; //green
                System.out.println("\nPlayer "+(i+1)+":");
                for(int j=0; j<player[i].b.length; j++){
-               
-                  if(player[i].c[j]=='R'){
-                        situps = situps + player[i].b[j];
-                     }
-                  if(player[i].c[j]=='B'){
-                        pushups = pushups + player[i].b[j];  
-                     }
-                  if(player[i].c[j]=='Y'){
-                        squats = squats + player[i].b[j];  
-                     }
-                  if(player[i].c[j]=='G'){
-                        lunges = squats + player[i].b[j];  
-                     }
+                  if(player[i].b[j]<11){
+                     if(player[i].c[j]=='R'){
+                           situps = situps + player[i].b[j];
+                        }
+                     if(player[i].c[j]=='B'){
+                           pushups = pushups + player[i].b[j];  
+                        }
+                     if(player[i].c[j]=='Y'){
+                           squats = squats + player[i].b[j];  
+                        }
+                     if(player[i].c[j]=='G'){
+                           lunges = squats + player[i].b[j];  
+                        }
+                  }
                }
                System.out.println("Pushups: "+ pushups );
                System.out.println("Squats: "+ squats );
@@ -219,7 +220,7 @@ public class UnoWorkoutTest {
                   
                   if(card[i*j].a==11){//setup the skip card
                      //card[i*j].a=0;
-                     card[i*j].b=Character.toLowerCase(card[i*j].b);
+                     //card[i*j].b=Character.toLowerCase(card[i*j].b);
                      System.out.print(card[i*j].b+"[Skip], ");
                      
                      card[i*j].actionCard =true;
@@ -227,14 +228,14 @@ public class UnoWorkoutTest {
                   if(card[i*j].a==12){//setup the draw 2 card
                      //card[i*j].a=0;
                      //card[i*j].b='D';
-                     card[i*j].b=Character.toLowerCase(card[i*j].b);
+                     //card[i*j].b=Character.toLowerCase(card[i*j].b);
                      System.out.print(card[i*j].b+"[D2], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].a==13){//setup the reverse card
                      //card[i*j].a=0;
                      //card[i*j].b='E';
-                     card[i*j].b=Character.toLowerCase(card[i*j].b);
+                     //card[i*j].b=Character.toLowerCase(card[i*j].b);
                      System.out.print(card[i*j].b+"[Reverse], ");
                      card[i*j].actionCard =true;
                   }

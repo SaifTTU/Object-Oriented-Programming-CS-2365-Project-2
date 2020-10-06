@@ -2,8 +2,8 @@ import java.util.*;
 public class UnoWorkout {
     public static void main(String[] args) {
     
-        Card fakeCardArray[] = new Card[384];
-        fakeCardArray=createDeck(3, fakeCardArray); 
+        Card initialCardArray[] = new Card[384];
+        initialCardArray=createDeck(3, initialCardArray); 
         
          
         Scanner sc = new Scanner(System.in); // Create a Scanner object
@@ -30,7 +30,7 @@ public class UnoWorkout {
 
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i] = new Card();
-            cardArray[i].setData(fakeCardArray[i%(d*29)].a, fakeCardArray[i/(d)].b);
+            cardArray[i].setData(initialCardArray[i%(d*29)].a, initialCardArray[i/(d)].b);
             System.out.print(cardArray[i].a + ", ");
 
         }

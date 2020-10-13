@@ -63,6 +63,8 @@ public class UnoWorkout {
            updateHand(player,cardArray,p);
            showHand(cardArray, p);
            player=sortHand(player);
+           //showWorkOut(player);
+           player=actionCard(player,cardArray);
            showWorkOut(player);
            System.out.println("\n1. Proceed... (Exit = 0)");
            z = sc.nextInt();
@@ -120,23 +122,84 @@ public class UnoWorkout {
         return cardArray;
     }
     
+    
+    
+    public static Player[] actionCard(Player[] player, Card[] cardArray){
+         //String curAct; //current Action
+         int value = 0;
+         boolean exists = false;
+         
+         for(int j=0;j<player.length;j++){
+               System.out.print("\nPlayer "+(j+1)+" has ");
+               for(int i=0;i<player[j].val.length;i++){
+                    if(player[j].val[i]>10){
+                        exists = true;
+                        player[j].value=player[j].val[i];
+                              switch(player[j].val[i]){
+                                    case 11:
+                                        System.out.print("a Skip card "); //removes
+                                        player[j]=skip(player[j],player[j].col[i]);
+                                        System.out.print("(Skip: all "+player[j].col[i]+" card will be removed from this round)");
+                                        System.out.print(", ");
+                                        break;
+                                    case 12:
+                                        System.out.print("a Draw 2 card, "); //doubles color
+                                        
+                                        break;
+                                    case 13:
+                                        System.out.print("a Reverse card "); //removes and adds to the bottom
+                                        player[j]=reverse(player[j],player[j].col[i],cardArray);
+                                        System.out.print("(Reverse: all "+player[j].col[i]+" card will be removed from this round and added to the bottom of the deck)");
+                                        System.out.print(", ");
+                                        break;
+                                    case 14:
+                                        System.out.print("a Wild card, ");
+                                        break;
+                                    default:
+                                        System.out.print("a Draw 4 card, ");
+                                }
+                         
+                        
+                    }
+                       
+               }
+               System.out.print(" no action cards");
+         }
+         System.out.print("\n");
+         return player; //returns player array
+    }
+    
+    public static Player skip(Player player, char col){ //rellies on actionCards method, does it one player at a time rather than all at once,
+         for(int i=0;i<player.val.length;i++){
+               if(col==player.col[i]){
+                     System.out.print("\n[Card: "+player.val[i]+player.col[i]+" removed]");
+                     player.val[i]=0; //remove the value of this card
+                     }
+         }
+         return player; //returns player object
+    }
+    
+    public static Player reverse(Player player, char col, Card[] cardArray){ 
+             for(int i=0;i<player.val.length;i++){
+               if(col==player.col[i]&&player.val[i]!=13){
+                     Card newCard = new Card();
+                     newCard.col=player.col[i];
+                     newCard.val=player.val[i];
+                     addTo(cardArray, newCard);
+                     player.val[i]=0; //remove the value of this card
+               }
+         }
+         return player; //returns player object
+    }
+    
+    
     public static Player[] sortHand(Player[] player) {  
         int n = 7;  
         int temp = 0; 
         char tempChar = 'B'; 
             for(int k=0;k<player.length;k++){
             
-               for(int i=0; i < n; i++){  //sorting colors
-                       for(int j=1; j < (n-i); j++){  
-                                if(player[k].col[j-1] > player[k].col[j]){  
-                                        
-                                       tempChar = player[k].col[j-1];  
-                                       player[k].col[j-1] = player[k].col[j];  
-                                       player[k].col[j] = tempChar;  
-                               }  
-                                
-                       }  
-               }
+               
               
                for(int i=0; i < n; i++){  //sorting numbers
                        for(int j=1; j < (n-i); j++){  
@@ -145,16 +208,37 @@ public class UnoWorkout {
                                        temp = player[k].val[j-1];  
                                        player[k].val[j-1] = player[k].val[j];  
                                        player[k].val[j] = temp;  
+                                       
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;
                                }  
                                 
                        }  
                }
+               
+               for(int i=0; i < n; i++){  //sorting colors
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].col[j-1] > player[k].col[j]){  
+                                        
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;  
+                                       
+                                       temp = player[k].val[j-1];  
+                                       player[k].val[j-1] = player[k].val[j];  
+                                       player[k].val[j] = temp;
+                               }  
+                                
+                       }  
+               }
+               
                System.out.print("\nNew Player "+(k+1)+"'s Hand: ");
-               for(int i=0; i < player.length; i++){
+               //for(int i=0; i < player.length; i++){
                      for(int j=0; j < n; j++){ 
                            System.out.print(" "+player[k].val[j]+""+player[k].col[j]);
                      }
-               } 
+               //} 
                
           }
           return player;
@@ -162,7 +246,7 @@ public class UnoWorkout {
     }
 
     public static Card[] addTo(Card[] cardArray, Card fakeCard) {
-        System.out.println("\nAdding fake card with values " + fakeCard.val + " and " + fakeCard.col + " to the back of the deck");
+        System.out.print("\n[Adding " + fakeCard.val + "" + fakeCard.col + " to the back of the deck] ");
         Card[] newArray = new Card[cardArray.length + 1];
         for (int i = 0; i < cardArray.length; i++) {
             newArray[i] = cardArray[i];
@@ -231,7 +315,7 @@ public class UnoWorkout {
                            squats = squats + player[i].val[j];  
                         }
                      if(player[i].col[j]=='G'){
-                           lunges = squats + player[i].val[j];  
+                           lunges = lunges + player[i].val[j];  
                         }
                   }
                }
@@ -241,6 +325,7 @@ public class UnoWorkout {
                System.out.println("Lunges: "+ lunges );
          }
     }
+    
     
     public static Card[] createDeck(int d, Card[] cardArray){
          int val[] ={0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,15};
@@ -287,11 +372,12 @@ public class UnoWorkout {
                   if(card[i*j].val==14){//setup the wild card
                      //card[i*j].a=0;
                      System.out.print("[WILD], ");
-                     card[i*j].col='W';
+                     //card[i*j].col='W';
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==15){//setup the wild card
-                     card[i*j].col='F';
+                     //card[i*j].col='F';
+                     //card[i*j].val=4;
                      System.out.print("[WILD D4], ");
                      card[i*j].actionCard =true;
                   }
@@ -349,6 +435,8 @@ class Card {
         return colText;
     }
     
+    
+    
     public void showData() {
         System.out.print(val);
         System.out.print(col + ", ");
@@ -360,5 +448,39 @@ class Player {
     int a; //player number
     int val[] = new int[7]; //card array with numbers
     char col[] = new char[7]; //card array with color chars
+
+    String acText; //actionCard text
+    int value = 11;
+    public String acText()
+    {
+        
+        switch(value){
+            case 11:
+                //System.out.print("Red");
+                acText=("Skip");
+                break;
+            case 12:
+                //System.out.print("Blue");
+                acText=("Draw 2");
+                break;
+            case 13:
+                //System.out.print("Yellow");
+                acText=("Reverse");
+                break;
+            case 14:
+                //System.out.print("Green");
+                acText=("Wild");
+                break;
+            case 15:
+                //System.out.print("Green");
+                acText=("Draw 4");
+                break;
+            //default:
+                //System.out.print("black");
+                //acText=("Regular");
+        }
+        return acText;
+    }
+
 
 }

@@ -9,4 +9,4 @@ Also Note: for now the showHand() method also adds the values of the hand, (it s
 
 Also: remember to use the colText() method in the card class to print the String color of any card.
 
-Also: I just added javax.swing functionality. 
+just added javax.swing functionality for the showButton dialogue stuff. I put all three options in a method titled "option(int o)" which takes in one argument, the number of the option that is being given. 

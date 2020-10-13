@@ -163,7 +163,8 @@ public class UnoWorkout {
                     }
                        
                }
-               System.out.print(" no action cards");
+                  if(exists==false)
+                        System.out.print(" no action cards");
          }
          System.out.print("\n");
          return player; //returns player array

@@ -114,7 +114,7 @@ public class UnoWorkout {
         int z=1;
         while(z!=0)
         {
-           cardArray = containsReverse(cardArray, p, 7);
+           //cardArray = containsReverse(cardArray, p, 7);
            cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
            System.out.println("\nNew Deck: ");
            displayDeck(cardArray);

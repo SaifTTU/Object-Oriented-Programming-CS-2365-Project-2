@@ -129,8 +129,22 @@ public class UnoWorkout {
         cardArray = addTo(cardArray, fakeCard); 
         */
         
-        int z=1;
-        while(z!=0)
+	//Game Loop: any type of program that has repeating elements needs a game loop, a way to for the player 
+	//or user to iterate every turn. We have several of these methods repeat each turn. 
+	//For example, removeFrom() method removes a certain number of cards per the number of players each turn
+	//display deck is mainly for us to debug and keep track of how many cards are in the deck
+	//and see if it matches the players' hands. 
+	//updateHand changes the values in the player[]'s int and char arrays
+	//showHand, an old version of of sortHand which I decided to keep to show presorting, show's unsorted hands
+	//in sortHand, we utilize bubbling sorting 4 times to get them in the best order: first we order them based on their color,
+	//and then value. The reason we had to do this 4 times instead of 2 was because we used separate arrays for the value and color
+	//which then needed to be sorted correctly based on their indexes
+	//after this we implemented the actionCard method. This method utlizes several other methods like skip and reverse to modify workout values
+	//showWorkout also utlizes the player arrays and the reason this is not void is beacuse we attached total values to the player class/objects
+	//And finally I added an additional text that appears when there arent anycards remaining because I felt like our previous warnings werent specific enough
+	//That way the player knows to press 0 to save their code. We chose to do this because  
+        int z=1; //player options
+        while(z!=0) //game loop
         {
            //cardArray = containsReverse(cardArray, p, 7);
            cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
@@ -142,7 +156,7 @@ public class UnoWorkout {
            player=sortHand(player);
            player=actionCard(player,cardArray);
            player=showWorkOut(player);
-           System.out.println("\n1. Proceed... (Exit = 0)");
+           System.out.println("\n1. Proceed... (Exit = 0/Save to HTML)");
            if(cardArray.length<7)
                System.out.print("(Out of cards. Enter 0 to save the results) ");
            z = sc.nextInt();
@@ -155,7 +169,7 @@ public class UnoWorkout {
         System.out.println("File created at: " + myFile.getAbsolutePath());
         
         createHTML(output); //output = a string with the text name, this method is going to look for it
-    }
+    
 
     public static void displayDeck(Card[] cardArray) {
         for (int i = 0; i < cardArray.length; i++) {

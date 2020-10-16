@@ -10,19 +10,19 @@ public class UnoWorkout {
         
         
         
-        int d = option(1);
-        int p = option(2);
-        int s = option(3);
+        int d = option(1); //number of decks, passed to the option method
+        int p = option(2); //people
+        int s = option(3); //shuffling method
         String output = createHTMLName();
         
         
-        File myFile = new File(output+".txt");
+        File myFile = new File(output+".txt"); //creates init text file
     	if(myFile.createNewFile()) {
     		System.out.println("File created: " + myFile.getName());
-    		System.out.println("File created at: " + myFile.getAbsolutePath());
+    		System.out.println("File created at: " + myFile.getAbsolutePath()); //sends file name and location
     	}
     	FileWriter writer = new FileWriter(output+".txt");
-    	writer.write("Workout");
+    	writer.write("Workout"); //prints workout to the top of the file
         
         
         
@@ -169,8 +169,8 @@ public class UnoWorkout {
         System.out.println("File created at: " + myFile.getAbsolutePath());
         
         createHTML(output); //output = a string with the text name, this method is going to look for it
+    }
     
-
     public static void displayDeck(Card[] cardArray) {
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i].showData();
@@ -435,14 +435,22 @@ public class UnoWorkout {
           return player;
        }
        catch (Exception e) {
-            System.out.print("\n*                                                                             *");
+            catch (Exception e) {
             System.out.print("\n*                                                                             *");
             System.out.print("\n*                                                                             *");
             System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            for(int i=0;i<player.length;i++){
+            System.out.print("\n*                 Player "+(i+1)+"       "+player[i].totalPushup+"       "+player[i].totalSquat+"       "
+            +player[i].totalSitup+"       "+player[i].totalLunge+"      "+player[i].totalBurpe+"          *");
+            } //changed this to show what the amount is
+            System.out.print("\n*                                                                             *");
             System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
             System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
             return player;
+        }
+
         }
     }
     

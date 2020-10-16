@@ -1,11 +1,29 @@
 import java.util.*;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+
+
 public class UnoWorkout {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        
+        
         
         int d = option(1);
         int p = option(2);
         int s = option(3);
+        String output = createHTMLName();
+        
+        
+        File myFile = new File(output+".txt");
+    	if(myFile.createNewFile()) {
+    		System.out.println("File created: " + myFile.getName());
+    		System.out.println("File created at: " + myFile.getAbsolutePath());
+    	}
+    	FileWriter writer = new FileWriter(output+".txt");
+    	writer.write("Workout");
+        
         
         
         Card fakeCardArray[] = new Card[384];
@@ -123,10 +141,20 @@ public class UnoWorkout {
            //showWorkOut(player);
            player=sortHand(player);
            player=actionCard(player,cardArray);
-           showWorkOut(player);
+           player=showWorkOut(player);
            System.out.println("\n1. Proceed... (Exit = 0)");
+           if(cardArray.length<7)
+               System.out.print("(Out of cards. Enter 0 to save the results) ");
            z = sc.nextInt();
+           
         }
+        
+        dispTotals(player, writer); //it sort of "Saves As" on the file
+        
+        writer.close();
+        System.out.println("File created at: " + myFile.getAbsolutePath());
+        
+        createHTML(output); //output = a string with the text name, this method is going to look for it
     }
 
     public static void displayDeck(Card[] cardArray) {
@@ -134,7 +162,21 @@ public class UnoWorkout {
             cardArray[i].showData();
         }
     }
-
+    
+    public static void dispTotals(Player[] player, FileWriter writer) throws IOException {
+    	
+    	writer.write("\n\n----------TOTALS--------\n\n");
+    	
+    	for(int i = 0; i < player.length; i++)
+    	{
+    		writer.write("\nPlayer: " + (i+1));
+    		writer.write("\nTotal Pushups: " + player[i].totalPushup);
+    		writer.write("\nTotal Squats: " + player[i].totalSquat);
+    		writer.write("\nTotal Situps: " + player[i].totalSitup);
+    		writer.write("\nTotal Lunges: " + player[i].totalLunge);
+         writer.write("\nTotal Burpes: " + player[i].totalBurpe);
+    	}
+    }
     public static void showHand(Card[] cardArray, int players) {
         for (int j = 1; j <= players; j++) {
             if (players >= j)
@@ -356,7 +398,13 @@ public class UnoWorkout {
             }
             return newArray;
         } catch (Exception e) {
-            System.out.println("Out of cards 3. Start Again");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
             return cardArray;
         }
     }
@@ -373,12 +421,18 @@ public class UnoWorkout {
           return player;
        }
        catch (Exception e) {
-            System.out.println("Out of cards! 3. Start Again");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
             return player;
         }
     }
     
-    public static void showWorkOut(Player[] player){
+    public static Player[] showWorkOut(Player[] player){
          int pushups; //blue
          int squats; //yellow
          int situps; //red
@@ -396,17 +450,21 @@ public class UnoWorkout {
                  if(player[i].val[j]<11)
                  {
                      if(player[i].col[j]=='R'){
-                           //System.out.println(player[i].val[j]);
+                           //System.out.println(player[i].val[j]); //Moved this towards the bottom underneath the draw 2 method (its still in for loop) (it still works)
                            situps = situps + player[i].val[j];
+                           //player[i].totalSitup += situps;
                         }
                      if(player[i].col[j]=='B'){
-                           pushups = pushups + player[i].val[j];  
+                           pushups = pushups + player[i].val[j]; 
+                           //player[i].totalPushup += pushups;
                         }
                      if(player[i].col[j]=='Y'){
-                           squats = squats + player[i].val[j];  
+                           squats = squats + player[i].val[j];
+                           //player[i].totalSquat += squats;
                         }
                      if(player[i].col[j]=='G'){
-                           lunges = lunges + player[i].val[j];  
+                           lunges = lunges + player[i].val[j]; 
+                           //player[i].totalLunges += lunges;
                         }
                   }
                   if(player[i].val[j]==12){
@@ -421,13 +479,12 @@ public class UnoWorkout {
                   }
                   if(player[i].val[j]==14){
                         burpes = burpes + 4; //if its a Wild Card
+                        
+
                   }
                   if(player[i].val[j]==15){
                         burpes = burpes * 4; //if its a Wild Draw 4
-                  }
-                  
-                  
-                  
+                  } 
                   
                }
                
@@ -441,13 +498,21 @@ public class UnoWorkout {
                if(draw2[3]==true)
                lunges=lunges*2;
                
+               player[i].totalSitup += situps; //I had had to change its location to appear after draw 2's occured
+               player[i].totalPushup += pushups; //cause before it was printing way too few and I think this is why
+               player[i].totalSquat += squats;
+               player[i].totalLunge += lunges;
+               player[i].totalBurpe += burpes;
+               
                System.out.println("Pushups: "+ pushups );
                System.out.println("Squats: "+ squats );
                System.out.println("Situps: "+ situps );
                System.out.println("Lunges: "+ lunges );
-               if(burpes!=0)
+               if(burpes!=0) //It only prints Burpes if they have them. Should we always include it? Idk kinda liked 4 displayed by default better.
                System.out.println("Burpes: "+ burpes );
          }
+         
+         return player; //returns "players" actually. (player[]) 
     }
     
     
@@ -573,8 +638,67 @@ public class UnoWorkout {
          option++;       
          System.out.println(option);     
          
-    
          return option;
+    }
+    
+    public static void createHTML(String output){
+            String doctype = "<!DOCTYPE html>";
+            String html="<html>";
+            //String head="<head>";
+            //String _head="</head>";
+            String body="<body>";
+            //String heading_1="<h1>";
+            //String user_heading="THIS IS A TEST";
+            //String _heading_1="</h1>"; //changed it to _ for "close" heading
+            String paragraph = "<p>";
+            String user_paragraph="This is a paragraph.";
+            String _paragraph = "</p>";//close paragraph
+            String _body="</body>"; //close body
+            String _html="</html>"; //close html
+            try {
+              //Filewriter writer = new Filewiter();
+              File myFile = new File(output+".html");
+              FileWriter writer = new FileWriter(output+".html");
+              
+              
+       	      writer.write(doctype);
+               writer.write(html);
+               writer.write(body);
+               //writer.write(paragraph);
+               /*for(int i = 0;i<(output+".txt").length();i++){
+                     writer.write(user_paragraph);
+               }*/
+               Scanner scanner = new Scanner(new File(output+".txt"));
+               while (scanner.hasNextLine()) {
+                  writer.write(paragraph);
+                  String line = scanner.nextLine();
+                  writer.write(line);
+                  writer.write(_paragraph);
+                  // process the line
+               }
+               
+               writer.write(_body);
+               writer.write(html);
+               System.out.println("\nHTML file created at: " + myFile.getAbsolutePath());
+               writer.close();
+            }
+            catch(IOException e) {
+              e.printStackTrace();
+            }
+            
+            
+    }
+    
+    public static String createHTMLName(){
+            String output;
+            JFrame jframe = new JFrame();
+            output=JOptionPane.showInputDialog(jframe,"Enter the name of the outpute file. If not entered (press cancel) a default name of \"Output.txt\" will be created. "); 
+            if(output==null||output.length()<1)
+            {
+               output="Output";
+            }
+            System.out.println("Name of file: "+output+".txt" );
+         return output;
     }
     
 }
@@ -622,6 +746,26 @@ class Card {
         return colText;
     }
     
+    String actionCardText;
+    public String actionCardText()
+    {
+        switch(val){
+            case 11:
+                colText=("[Skip]");
+            case 12:
+                colText=("[Draw 2]");
+            case 13:
+                colText=("[Reverse]");
+            case 14:
+                colText=("[Wild]");
+            case 15:
+                colText=("[Wild]");
+            default:
+                colText=("");
+        }
+        return colText;
+    }
+    
     
     
     public void showData() {
@@ -636,11 +780,17 @@ class Player {
     int val[] = new int[7]; //card array with numbers
     char col[] = new char[7]; //card array with color chars
 
-    String acText; //actionCard text
-    int value = 11;
-    public String acText()
-    {
-        
+    int totalPushup=0;
+	 int totalSitup=0;
+	 int totalSquat=0;
+	 int totalLunge=0;
+    int totalBurpe=0;
+
+
+     String acText; //actionCard text
+     int value = 11;
+     public String acText()
+     {
         switch(value){
             case 11:
                 //System.out.print("Red");
@@ -665,9 +815,7 @@ class Player {
             //default:
                 //System.out.print("black");
                 //acText=("Regular");
-        }
-        return acText;
-    }
-
-
+         }
+         return acText;
+      }
 }

@@ -311,6 +311,14 @@ public class UnoWorkout {
          return player; //returns player array
     }
     
+	
+    //Method
+    //Type: Player object
+    //Name: skip
+    //Functionality: it deletes the value attributed to a specific color for a players entire hand. 
+    //Parameters: player object, col - color character
+    //since this method is called in the actionCard method we chose to call it individually and as such, could make this method work for 1 Player at a time
+    //instead of all the players in an array at once
     public static Player skip(Player player, char col){ //rellies on actionCards method, does it one player at a time rather than all at once,
          for(int i=0;i<player.val.length;i++){
                if(col==player.col[i] /*&&player.val[i]<11 */ ){ //if its the same color and less than 11
@@ -321,6 +329,14 @@ public class UnoWorkout {
          return player; //returns player object
     }
     
+	
+    //Method
+    //Type: Player object
+    //Name: reverse
+    //Functionality: functions similar to skip, except it utilizes the addTo() method to add cards of a specific color to the back of the deck
+    //Parameters: player object, col - color character, cardArray - the entire deck whose values we are going to be manipulating when we add more to it
+    //Similarly deletes the value attributed to a color but we recreate the cardArray deck exactly as it was except it will have a certain number of new
+    //cards added to it based on the color
     public static Player reverse(Player player, char col, Card[] cardArray){ 
              for(int i=0;i<player.val.length;i++){
                if(col==player.col[i]&&player.val[i]!=13 /*&&player.val[i]<11 */ ){ //if its the same color, not a reverse, and less than 11
@@ -335,6 +351,11 @@ public class UnoWorkout {
          return player; //returns player object
     }
     
+    //Method
+    //Type: Player object
+    //Name: draw2
+    //Functionality: goes through the player hand and multiplies the total amount to add for workouts by two if the color is matched to the one given
+    //Parameters: player object, col - color character (we are given the color to look for in this case)
     public static Player draw2(Player player, char col){ 
          int total= 0;
          for(int i=0;i<player.val.length;i++){
@@ -348,7 +369,14 @@ public class UnoWorkout {
          return player; //returns player object
     }
     
-    
+    //Method
+    //Type: Player[] object array
+    //Name: sortHand
+    //Functionality: sorts hand
+    //utlizes bubble sort algorithm (4 times) to sort player's hand based on value and color
+    //(we did this 4 times because the player array has separate array variables instead of char arrays, because this
+    //made it much easier to call them in several parts of our project, the 2nd and 4th loop put the respective col and val back with their corrrect corresponding value or color
+    //Parameters: player[] object array
     public static Player[] sortHand(Player[] player) {  
         int n = 7;  
         int temp = 0; 
@@ -418,7 +446,12 @@ public class UnoWorkout {
           return player;
   
     }
-
+	
+    //Method
+    //Type: Card[] object array - returns the entire deck essentially
+    //Name: addTo
+    //Functionality: adds 1 card to the back of the deck at a time
+    //Parameters: cardArray - the original deck, and a predifined card object fakeCard
     public static Card[] addTo(Card[] cardArray, Card fakeCard) {
         System.out.print(" [Adding " + fakeCard.val + "" + fakeCard.col + " to the back of the deck], ");
         Card[] newArray = new Card[cardArray.length + 1];
@@ -428,7 +461,13 @@ public class UnoWorkout {
         newArray[cardArray.length] = fakeCard;
         return newArray;
     }
-
+    
+    //Method
+    //Type: Card[] object array - returns the entire deck 
+    //Name: removeFrom
+    //Functionality: removes several cards from the front of the deck at a time, based on how many players there are
+    //so if there are 3 players, remove 3*7 cards from the deck and return the new deck
+    //Parameters: cardArray - the deck, people - the number of players, hand - the number of cards in the players hand (it is always 7)
     public static Card[] removeFrom(Card[] cardArray, int people, int hand) {
         System.out.println("\nRemoving the following " + (people * 7) + " cards from the top of the deck: ");
 

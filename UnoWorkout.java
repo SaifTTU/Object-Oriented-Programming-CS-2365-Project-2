@@ -10,19 +10,19 @@ public class UnoWorkout {
         
         
         
-        int d = option(1); //number of decks, passed to the option method
-        int p = option(2); //people
-        int s = option(3); //shuffling method
+        int d = option(1);
+        int p = option(2);
+        int s = option(3);
         String output = createHTMLName();
         
         
-        File myFile = new File(output+".txt"); //creates init text file
+        File myFile = new File(output+".txt");
     	if(myFile.createNewFile()) {
     		System.out.println("File created: " + myFile.getName());
-    		System.out.println("File created at: " + myFile.getAbsolutePath()); //sends file name and location
+    		System.out.println("File created at: " + myFile.getAbsolutePath());
     	}
     	FileWriter writer = new FileWriter(output+".txt");
-    	writer.write("Workout"); //prints workout to the top of the file
+    	writer.write("Workout");
         
         
         
@@ -129,7 +129,7 @@ public class UnoWorkout {
         cardArray = addTo(cardArray, fakeCard); 
         */
         
-	//Game Loop: any type of program that has repeating elements needs a game loop, a way to for the player 
+   //Game Loop: any type of program that has repeating elements needs a game loop, a way to for the player 
 	//or user to iterate every turn. We have several of these methods repeat each turn. 
 	//For example, removeFrom() method removes a certain number of cards per the number of players each turn
 	//display deck is mainly for us to debug and keep track of how many cards are in the deck
@@ -142,9 +142,10 @@ public class UnoWorkout {
 	//after this we implemented the actionCard method. This method utlizes several other methods like skip and reverse to modify workout values
 	//showWorkout also utlizes the player arrays and the reason this is not void is beacuse we attached total values to the player class/objects
 	//And finally I added an additional text that appears when there arent anycards remaining because I felt like our previous warnings werent specific enough
-	//That way the player knows to press 0 to save their code. We chose to do this because  
-        int z=1; //player options
-        while(z!=0) //game loop
+	//That way the player knows to press 0 to save their code. We chose to do this because, since there were two of use, this was a combination of both styles[Edit later]
+
+        int z=1;
+        while(z!=0)
         {
            //cardArray = containsReverse(cardArray, p, 7);
            cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
@@ -156,7 +157,7 @@ public class UnoWorkout {
            player=sortHand(player);
            player=actionCard(player,cardArray);
            player=showWorkOut(player);
-           System.out.println("\n1. Proceed... (Exit = 0/Save to HTML)");
+           System.out.println("\n1. Proceed... (Exit = 0)");
            if(cardArray.length<7)
                System.out.print("(Out of cards. Enter 0 to save the results) ");
            z = sc.nextInt();
@@ -170,7 +171,7 @@ public class UnoWorkout {
         
         createHTML(output); //output = a string with the text name, this method is going to look for it
     }
-    
+
     public static void displayDeck(Card[] cardArray) {
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i].showData();
@@ -435,22 +436,19 @@ public class UnoWorkout {
           return player;
        }
        catch (Exception e) {
-            catch (Exception e) {
+            System.out.print("\n*                                                                             *");
             System.out.print("\n*                                                                             *");
             System.out.print("\n*                                                                             *");
             System.out.print("\n*            Out of cards! Take a short break and start again!                *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            for(int i=0;i<player.length;i++){
+            //commented this out: but it prints what the total is in the textbox
+            /*for(int i=0;i<player.length;i++){
             System.out.print("\n*                 Player "+(i+1)+"       "+player[i].totalPushup+"       "+player[i].totalSquat+"       "
             +player[i].totalSitup+"       "+player[i].totalLunge+"      "+player[i].totalBurpe+"          *");
-            } //changed this to show what the amount is
-            System.out.print("\n*                                                                             *");
+            } */
             System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
             System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
             return player;
-        }
-
         }
     }
     

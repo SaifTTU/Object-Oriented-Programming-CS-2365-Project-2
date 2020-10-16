@@ -142,7 +142,8 @@ public class UnoWorkout {
 	//after this we implemented the actionCard method. This method utlizes several other methods like skip and reverse to modify workout values
 	//showWorkout also utlizes the player arrays and the reason this is not void is beacuse we attached total values to the player class/objects
 	//And finally I added an additional text that appears when there arent anycards remaining because I felt like our previous warnings werent specific enough
-	//That way the player knows to press 0 to save their code. We chose to do this because, since there were two of use, this was a combination of both styles[Edit later]
+	//That way the player knows to press 0 to save their code. We chose to do this because, to be honestly since there were two of us who wrote it, 
+	//each with a different approach. this is like the combination of our approach. 
 
         int z=1;
         while(z!=0)
@@ -171,13 +172,24 @@ public class UnoWorkout {
         
         createHTML(output); //output = a string with the text name, this method is going to look for it
     }
-
+    //Class or Method: Method
+    //Type: void
+    //Name: displayDeck
+    //Functionality: outputs every element in the array in the order it is given
+    //Parameters: cardArray
+    //Utilizes card objects' showData() method to display value int and color char
     public static void displayDeck(Card[] cardArray) {
         for (int i = 0; i < cardArray.length; i++) {
             cardArray[i].showData();
         }
     }
     
+    //Method
+    //Type: void
+    //Name: dispTotals
+    //Functionality: writes total workouts for each player into the output file
+    //Parameters: player[] - an array of all the players, writer - the file writer,
+    //Utilizes player objects' totalPushup, totalLunge etc. values
     public static void dispTotals(Player[] player, FileWriter writer) throws IOException {
     	
     	writer.write("\n\n----------TOTALS--------\n\n");
@@ -192,6 +204,13 @@ public class UnoWorkout {
          writer.write("\nTotal Burpes: " + player[i].totalBurpe);
     	}
     }
+    //Method
+    //Type: void
+    //Name: showHand
+    //Functionality: shows the unsorted hands of each of the players, with action cards.
+    //Parameters: cardArray - the deck of cards, players - an int which holds the number of players
+    //This was an older method I made which counted every 7 cards in the deck and called that the "player's hand" before I 
+    //inserted them into the class
     public static void showHand(Card[] cardArray, int players) {
         for (int j = 1; j <= players; j++) {
             if (players >= j)
@@ -218,6 +237,12 @@ public class UnoWorkout {
         }
     }
 
+    //Method
+    //Type: Card object
+    //Name: shuffleDeck
+    //Functionality: shuffles deck
+    //Parameters: cardArray - the deck of all cards
+    //turns array of card objects into a list and then shuffles them and converts it back to array before returning the new Array value
     public static Card[] shuffleDeck(Card[] cardArray) {
         List < Card > cardList = Arrays.asList(cardArray); //card Array to to cardList, shuffled and then back to Array 
 
@@ -233,11 +258,16 @@ public class UnoWorkout {
     
     
     
-    
+    //Method
+    //Type: Player object array
+    //Name: actionCard
+    //Functionality: scans players hand for action cards and modifies the values, deck, and hand of the player accordingly
+    //Parameters: cardArray - the deck of all cards, player - an array of all player objects
+    //uses several methods within method based upon what value a certain player card has, which includes 11, Skip, 12, Draw2, 13, Reverse, 14, Wild, 15 Wild Draw 4
     public static Player[] actionCard(Player[] player, Card[] cardArray){
          //String curAct; //current Action
          int value = 0;
-         boolean exists = false;
+         boolean exists = false; //if an action card is in a players hand this becomes true
          
          for(int j=0;j<player.length;j++){
                System.out.print("\nPlayer "+(j+1)+" has ");

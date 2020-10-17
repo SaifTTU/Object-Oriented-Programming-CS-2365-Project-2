@@ -493,6 +493,11 @@ public class UnoWorkout {
         }
     }
     
+    //Method
+    //Type: Player[] object array - all players
+    //Name: updateHand
+    //Functionality: is needed to match the players hand to the right amount of cards in the deck
+    //Parameters: cardArray - the deck, player[] - Player(s), numberOfPlayers
     public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
        try {
           for(int j=0; j<numberOfPlayers;j++){
@@ -521,6 +526,11 @@ public class UnoWorkout {
         }
     }
     
+    //Method
+    //Type: Player[] an object array of Player class - all of the players
+    //Name: showWorkOut
+    //Functionality: shows the workout of the current turn for all players.
+    //Parameters: cardArray - player[] - all players
     public static Player[] showWorkOut(Player[] player){
          int pushups; //blue
          int squats; //yellow
@@ -604,21 +614,25 @@ public class UnoWorkout {
          return player; //returns "players" actually. (player[]) 
     }
     
-    
+    //Method
+    //Type: Card[] - since this is the birth of our deck, the return value is a Card[] the entire set of 108-316 cards (of however many there is)
+    //Name: createDeck
+    //Functionality: shows the workout of the current turn for all players.
+    //Parameters: int d - how many decks there are, Card[] cardArray - anempty Card array that will soon hold new values when we return it.
     public static Card[] createDeck(int d, Card[] cardArray){
-         int val[] ={0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,15};
-         char col[] ={'B','Y','R','G'};
-         int numberOfDecks=d;
+         int val[] ={0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,15}; //the correct number of cards specified to the deck description
+         char col[] ={'B','Y','R','G'}; //anything that goes past 10 is an "action card" and will have special effects on the workout.
+         int numberOfDecks=d; //here we match the given number to the one from the method we created earlier
          
          Card oneDeck[]=new Card[val.length*4];
          Card card[]=new Card[val.length*4*numberOfDecks];
          for(int j=0; j<numberOfDecks;j++){
                System.out.println("\nDeck: "+(j+1));
                for(int i=0;i<oneDeck.length;i++){
-                  oneDeck[i] = new Card();
-                  card[i*j] = new Card();
+                  oneDeck[i] = new Card(); //first we created a test deck called one deck and then set the created deck equal to card 
+                  card[i*j] = new Card(); //and then we'll set card equal to cardArray and return cardArray
                   //for(int j=0;j<4;j++){
-                  oneDeck[i].setData(val[i%29],col[i/29]);
+                  oneDeck[i].setData(val[i%29],col[i/29]); //utilizing modulus and char division to create the exam dimensions of real deck
                   //System.out.print(oneDeck[i].a+""+oneDeck[i].col+", ");
                   card[i*j]=oneDeck[i];
                   if((card[i*j].val)<=10)
@@ -668,6 +682,12 @@ public class UnoWorkout {
          return cardArray;
     }
     
+    //Method
+    //Type: Card[]
+    //Name: containsReverse
+    //Functionality: needed to check if each player has a reverse , check what color they are
+    //and to reset the deck to have only those specific cards sent back to the bottom of the deck
+    //Parameters: Card[] cardArray - deck, int p - number of players , int hand - number of cards per player
     public static Card[] containsReverse(Card[] cardArray, int p, int hand){
        boolean[] redReverse={false,false,false,false};//per player
        boolean[] blueReverse={false,false,false,false};
@@ -702,6 +722,14 @@ public class UnoWorkout {
          return cardArray;
     }
     
+	
+    //Method
+    //Type: int
+    //Name: option
+    //Functionality: I created a few GUI based options and put them in a method for the player at the start.
+    //Asks them how many players, how many decks, and if they will be shuffling together or separately
+    //Parameters: int o - short for option. o basically means each of the many option dialog boxes to print and what to return.
+    //rather than creating several methods for each option, I though to number them in this manner instead. 
     public static int option(int o){
          int option=1;
          if(o==1){
@@ -730,6 +758,13 @@ public class UnoWorkout {
          return option;
     }
     
+    //Method
+    //Type: String
+    //Name: createHMTMLName
+    //Functionality: Rellies on information gathered from the createHTMLName method directly bellow
+    //adds a new file with all the appropriate tags of an html file and then places lines
+    //from our created txt file, one by one as a separate "paragraph" entity
+    //and then saves the html so it all comes out looking nice.
     public static void createHTML(String output){
             String doctype = "<!DOCTYPE html>";
             String html="<html>";
@@ -739,8 +774,8 @@ public class UnoWorkout {
             //String heading_1="<h1>";
             //String user_heading="THIS IS A TEST";
             //String _heading_1="</h1>"; //changed it to _ for "close" heading
-            String paragraph = "<p>";
-            String user_paragraph="This is a paragraph.";
+            String paragraph = "<p>"; //I found that giving each of the tags a name like this really helped me mentally keep track of everything
+            String user_paragraph="This is a paragraph."; //since coding is all about abstraction, its better to abstract away the tags in a manner more easy to understand
             String _paragraph = "</p>";//close paragraph
             String _body="</body>"; //close body
             String _html="</html>"; //close html
@@ -777,7 +812,11 @@ public class UnoWorkout {
             
             
     }
-    
+	
+    //Method
+    //Type: String
+    //Name: createHMTMLName
+    //Functionality: Allows the user to name the file they wish to create.
     public static String createHTMLName(){
             String output;
             JFrame jframe = new JFrame();
@@ -792,6 +831,18 @@ public class UnoWorkout {
     
 }
 
+//Class or Method: Class
+//Type: Card() - an object which holds two variables, val - for value, and col - for color (its a char variable)
+//it also contains a boolean actionCard set to false that switches to true if the value raises above 11 in our program.
+//in addition to this Card() also contains the following methods:
+//setData - used to set the val and col of the respective Card
+//showValue - for when we want to display the Value individually
+//showColor - for when we want to display just the Color Char individually
+//colText - which returns a String detailing the color in a string formath, For example B would be "Blue," R would be "Red," and so forth
+//acText - though we do not utilize it - it accomplishes the same task as colText in that it returns whatever actionCard the card it is in String format,
+//showData - lastly, showData() was my initial accessor that showed both the int and char of the respective card.
+//Name: createHMTMLName
+//Functionality: Allows the user to name the file they wish to create.
 class Card {
     int val;
     char col;
@@ -864,6 +915,16 @@ class Card {
 
 }
 
+//Class or Method: Class
+//Type: Player() - an object which holds three variables, val - for value, and col - for color, and a for the player number (which we dont end up needing all too much).
+//there can be a total of 4 players created with this class in our version of the game.
+//additionally it contains the totaling int variables: 
+//totalPushup, totalSitup, totalSquat, totallunge, totalBurpe - all set to 0
+//acText() - the player hand is so small (only 7 cards), we used two primitive arrays to represent the hands (which we were careful not to mix up their variables at any
+//point, however it essentially will accomplish the same task that it does in Card(), whenever given a number between 11 and 15 it will return namne of the actionCard
+
+//Name: createHMTMLName
+//Functionality: Allows the user to name the file they wish to create.
 class Player {
     int a; //player number
     int val[] = new int[7]; //card array with numbers

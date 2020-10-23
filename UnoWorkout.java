@@ -18,7 +18,7 @@ public class UnoWorkout {
         String output = createHTMLName();
         
         
-        File myFile = new File(output+".txt");
+        File myFile = new File(output+".txt"); // first we create an outpute txt file with a custom name
     	if(myFile.createNewFile()) {
     		System.out.println("File created: " + myFile.getName());
     		System.out.println("File created at: " + myFile.getAbsolutePath());

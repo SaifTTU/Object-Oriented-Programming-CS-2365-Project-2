@@ -10,3 +10,5 @@ Also Note: for now the showHand() method also adds the values of the hand, (it s
 We also added total variables to the player class that calculates the total amount of workouts that player had to do during the course of the game. These include stuff like int totalPushup; and int totalSquat; 
 
 The method that adds values in the players hand was modified to contribute to this running total, to be displayed at the end of the game. 
+
+The HTML producing method has been completed!

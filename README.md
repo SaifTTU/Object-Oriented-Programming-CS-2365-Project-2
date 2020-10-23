@@ -11,4 +11,5 @@ We also added total variables to the player class that calculates the total amou
 
 The method that adds values in the players hand was modified to contribute to this running total, to be displayed at the end of the game. 
 
-The HTML producing method has been completed!
+The html producing method has been completed. 
+We now just have to implement some javafx.

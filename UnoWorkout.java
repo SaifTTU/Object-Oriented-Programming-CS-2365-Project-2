@@ -1,3 +1,5 @@
+//Spoke with instructor about adding java fx and used swing controls a little bit. 
+//Main window uses javafx
 import java.util.*;
 import javax.swing.*;
 import java.io.File;

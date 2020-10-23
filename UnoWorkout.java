@@ -44,13 +44,13 @@ public class UnoWorkout {
         System.out.print("Shuffling: "); 
         switch(s){
             case(1):
-               System.out.println("Together");
+               System.out.println("Together"); //if they put option 1 it shuffles together
             break;
             case(2):
-               System.out.println("Together");
+               System.out.println("Separate"); //if they put optionu 2 it shuffles separately
             break;
             default: 
-               System.out.println("Together");
+               System.out.println("Together"); //if neither, (or if they press cancer), shuffle option "s" becomes "together"
             break;
         }
 

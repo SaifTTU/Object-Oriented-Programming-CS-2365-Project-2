@@ -12,7 +12,7 @@ public class UnoWorkout {
         
         
         
-        int d = option(1); //we call the option method to get information about the "difficulty" levels of the game
+        int d = option(1); //we call the option method to get information about the "difficulty" levels of the game. (if they press x it just becomes 1)
         int p = option(2); //p for number of players. (you can just put 1)
         int s = option(3); //3 for shuffling the decks all together or each individually
         String output = createHTMLName();
@@ -27,9 +27,9 @@ public class UnoWorkout {
     	writer.write("Workout");
         
         
-        
+        //I used this to setup the initial dimensions of the Card deck because that way the Array will never do an out of bounds, but we later overwrite it. 
         Card fakeCardArray[] = new Card[384];
-        fakeCardArray=createDeck(3, fakeCardArray); 
+        fakeCardArray=createDeck(3, fakeCardArray); //"fakeCardArray" named so for testing purposes - really now it means "initial Card Array"
         
          
         Scanner sc = new Scanner(System.in); // Create a Scanner object

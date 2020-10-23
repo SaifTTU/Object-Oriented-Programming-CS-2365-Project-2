@@ -12,9 +12,9 @@ public class UnoWorkout {
         
         
         
-        int d = option(1);
-        int p = option(2);
-        int s = option(3);
+        int d = option(1); //we call the option method to get information about the "difficulty" levels of the game
+        int p = option(2); //p for number of players. (you can just put 1)
+        int s = option(3); //3 for shuffling the decks all together or each individually
         String output = createHTMLName();
         
         

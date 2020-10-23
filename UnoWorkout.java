@@ -174,8 +174,9 @@ public class UnoWorkout {
         
         createHTML(output); //output = a string with the text name, this method is going to look for it
     }
+//------------------------------------------------------------------------------------------------------
     //Class or Method: Method
-    //Type: void
+    //Type: void, but displays a Card array Card[]
     //Name: displayDeck
     //Functionality: outputs every element in the array in the order it is given
     //Parameters: cardArray

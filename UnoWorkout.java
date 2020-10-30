@@ -1,5 +1,8 @@
 //Spoke with instructor about adding java fx and used swing controls a little bit. 
 //Main window uses javafx
+//By Tucker Hortman and Saif Chowdhury
+//Date:
+//Name: Project 2
 import java.util.*;
 import javax.swing.*;
 import java.io.File;
@@ -12,13 +15,13 @@ public class UnoWorkout {
         
         
         
-        int d = option(1); //we call the option method to get information about the "difficulty" levels of the game. (if they press x it just becomes 1)
-        int p = option(2); //p for number of players. (you can just put 1)
-        int s = option(3); //3 for shuffling the decks all together or each individually
+        int d = option(1);
+        int p = option(2);
+        int s = option(3);
         String output = createHTMLName();
         
         
-        File myFile = new File(output+".txt"); // first we create an outpute txt file with a custom name
+        File myFile = new File(output+".txt");
     	if(myFile.createNewFile()) {
     		System.out.println("File created: " + myFile.getName());
     		System.out.println("File created at: " + myFile.getAbsolutePath());
@@ -27,9 +30,9 @@ public class UnoWorkout {
     	writer.write("Workout");
         
         
-        //I used this to setup the initial dimensions of the Card deck because that way the Array will never do an out of bounds, but we later overwrite it. 
+        
         Card fakeCardArray[] = new Card[384];
-        fakeCardArray=createDeck(3, fakeCardArray); //"fakeCardArray" named so for testing purposes - really now it means "initial Card Array"
+        fakeCardArray=createDeck(3, fakeCardArray); 
         
          
         Scanner sc = new Scanner(System.in); // Create a Scanner object
@@ -44,13 +47,13 @@ public class UnoWorkout {
         System.out.print("Shuffling: "); 
         switch(s){
             case(1):
-               System.out.println("Together"); //if they put option 1 it shuffles together
+               System.out.println("Together");
             break;
             case(2):
-               System.out.println("Separate"); //if they put optionu 2 it shuffles separately
+               System.out.println("Together");
             break;
             default: 
-               System.out.println("Together"); //if neither, (or if they press cancer), shuffle option "s" becomes "together"
+               System.out.println("Together");
             break;
         }
 
@@ -161,9 +164,15 @@ public class UnoWorkout {
            player=actionCard(player,cardArray);
            player=showWorkOut(player);
            System.out.println("\n1. Proceed... (Exit = 0)");
-           if(cardArray.length<7)
-               System.out.print("(Out of cards. Enter 0 to save the results) ");
+           
            z = sc.nextInt();
+           
+           if(cardArray.length<7){
+               System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
+               z =0;
+               
+           }
+           
            
         }
         
@@ -174,9 +183,8 @@ public class UnoWorkout {
         
         createHTML(output); //output = a string with the text name, this method is going to look for it
     }
-//------------------------------------------------------------------------------------------------------
     //Class or Method: Method
-    //Type: void, but displays a Card array Card[]
+    //Type: void
     //Name: displayDeck
     //Functionality: outputs every element in the array in the order it is given
     //Parameters: cardArray
@@ -232,6 +240,8 @@ public class UnoWorkout {
                            System.out.print("[WILD], ");
                         if((cardArray[i].val)==15) 
                            System.out.print("[WILD D4], "); 
+                        if((cardArray[i].val)==0) 
+                           System.out.print("(Take a 2 minutes rest), "); 
                     }
                 }
             catch (Exception e) {
@@ -382,6 +392,7 @@ public class UnoWorkout {
     //Parameters: player[] object array
     public static Player[] sortHand(Player[] player) {  
         int n = 7;  
+        boolean takeARest = false;
         int temp = 0; 
         char tempChar = 'B'; 
             for(int k=0;k<player.length;k++){
@@ -441,8 +452,15 @@ public class UnoWorkout {
                           else if(player[k].val[j]==15){
                               System.out.print("  WILD Draw 4  ");
                               }
+                          else if(player[k].val[j]==0){
+                              takeARest=true;
+                              }
                               
                      }
+                     if(takeARest ==true){
+                        System.out.print("\n(Take a two minute rest)");
+                     }
+                     
                //} 
                
           }
@@ -647,7 +665,6 @@ public class UnoWorkout {
                      //card[i*j].a=0;
                      //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[Skip], ");
-                     
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==12){//setup the draw 2 card
@@ -678,7 +695,6 @@ public class UnoWorkout {
                   }
                   
                   //E is for reverse (because R was already taken)
-
                }
             }
          cardArray=card;

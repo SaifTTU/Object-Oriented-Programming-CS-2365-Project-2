@@ -27,6 +27,7 @@ public class CSProject2 extends Application {
    public static int d = 1; //number of decks
    public static int s = 1; //way to shuffle together or separate
    public static int z = 1; //for the game loop
+   public static String output;
    Player player[] = new Player[p];
    
    Card cardArray[] = new Card[384];
@@ -34,6 +35,16 @@ public class CSProject2 extends Application {
    
    @Override 
    public void start(Stage stage) throws IOException{ 
+      //String output = createHTMLName();
+      File myFile = new File(output+".txt");
+    	if(myFile.createNewFile()) {
+    		System.out.println("File created: " + myFile.getName());
+    		System.out.println("File created at: " + myFile.getAbsolutePath());
+    	}
+    	FileWriter writer = new FileWriter(output+".txt");
+    	writer.write("Workout");
+
+   
       //Label label = new Label();
       Group group = new Group();
       
@@ -153,10 +164,7 @@ public class CSProject2 extends Application {
                     
                     if(cardArray.length<7){
                     System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
-                    //z =0;
-                    
-                    
-                    
+                    //z =0;                
              }
         }
       });
@@ -164,7 +172,13 @@ public class CSProject2 extends Application {
       end.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 2
              @Override public void handle(ActionEvent e) {
                  
-                	
+                	//dispTotals(player, writer); //it sort of "Saves As" on the file
+        
+                  //writer.close();
+                  System.out.println("File created at: " + myFile.getAbsolutePath());
+                  
+                  createHTML(output); //output = a string with the text name, this method is going to look for it
+    
              }
         
       });
@@ -818,8 +832,7 @@ public class CSProject2 extends Application {
         d = option(1);
         p = option(2);
         s = option(3);
-        String output = createHTMLName();
-        
+        output = createHTMLName();
         
         File myFile = new File(output+".txt");
     	if(myFile.createNewFile()) {
@@ -828,6 +841,8 @@ public class CSProject2 extends Application {
     	}
     	FileWriter writer = new FileWriter(output+".txt");
     	writer.write("Workout");
+   
+      //dispTotals(player, writer); //it sort of "Saves As" on the file
    
         launch(args);
    } 
@@ -979,7 +994,6 @@ class Player {
          return acText;
       }
 }
-
 
 
 

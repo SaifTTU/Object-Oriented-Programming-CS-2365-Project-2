@@ -1,4 +1,4 @@
-//Spoke with instructor about adding java fx and used swing controls a little bit. 
+///Spoke with instructor about adding java fx and used swing controls a little bit. 
 //Main window uses javafx
 //Authors Tucker Hortman 
 //Saif Chowdhury
@@ -764,9 +764,71 @@ public class CSProject2 extends Application {
          writer.write("\nTotal Burpes: " + player[i].totalBurpe);
     	}
     }
-
+   //Method
+    //Type: int
+    //Name: option
+    //Functionality: I created a few GUI based options and put them in a method for the player at the start.
+    //Asks them how many players, how many decks, and if they will be shuffling together or separately
+    //Parameters: int o - short for option. o basically means each of the many option dialog boxes to print and what to return.
+    //rather than creating several methods for each option, I though to number them in this manner instead. 
+    public static int option(int o){
+         int option=1;
+         if(o==1){
+            Integer[] options = {1, 2, 3};
+            option = JOptionPane.showOptionDialog(null, "How many decks?",
+                "Number of Decks",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,null);
+         
+         }
+         if(o==2){
+            Integer[] options = {1,2,3,4};
+            option = JOptionPane.showOptionDialog(null, "How many players?",
+                "Number of Players",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+         }
+         if(o==3){
+            String[] options = {"Together", "Separately"};
+            option = JOptionPane.showOptionDialog(null, "Would you like to shuffle together or separately?",
+                "Shuffle Together or Separate.",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+         }
+         
+         option++;       
+         System.out.println(option);     
+         
+         return option;
+    }
+   //Method
+    //Type: String
+    //Name: createHMTMLName
+    //Functionality: Allows the user to name the file they wish to create.
+    public static String createHTMLName(){
+            String output;
+            JFrame jframe = new JFrame();
+            output=JOptionPane.showInputDialog(jframe,"Enter the name of the outpute file. If not entered (press cancel) a default name of \"Output.txt\" will be created. "); 
+            if(output==null||output.length()<1)
+            {
+               output="Output";
+            }
+            System.out.println("Name of file: "+output+".txt" );
+         return output;
+    }
    
    public static void main(String args[])throws IOException{ 
+        d = option(1);
+        p = option(2);
+        s = option(3);
+        String output = createHTMLName();
+        
+        
+        File myFile = new File(output+".txt");
+    	if(myFile.createNewFile()) {
+    		System.out.println("File created: " + myFile.getName());
+    		System.out.println("File created at: " + myFile.getAbsolutePath());
+    	}
+    	FileWriter writer = new FileWriter(output+".txt");
+    	writer.write("Workout");
+   
         launch(args);
    } 
 }
@@ -878,11 +940,11 @@ class Player {
     int val[] = new int[7]; //card array with numbers
     char col[] = new char[7]; //card array with color chars
 
-    int totalPushup=9;
-	 int totalSitup=1;
-	 int totalSquat=3;
-	 int totalLunge=4;
-    int totalBurpe=2;
+    int totalPushup=0;
+	 int totalSitup=0;
+	 int totalSquat=0;
+	 int totalLunge=0;
+    int totalBurpe=0;
 
 
      String acText; //actionCard text
@@ -917,8 +979,6 @@ class Player {
          return acText;
       }
 }
-
-
 
 
 

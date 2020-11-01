@@ -1,4 +1,4 @@
-///Spoke with instructor about adding java fx and used swing controls a little bit. 
+//Spoke with instructor about adding java fx and used swing controls a little bit. 
 //Main window uses javafx
 //Authors Tucker Hortman 
 //Saif Chowdhury
@@ -183,7 +183,7 @@ public class CSProject2 extends Application {
      
       
       //Creating a scene object 
-      Scene scene = new Scene(group, 750, 750);  
+      Scene scene = new Scene(group, 750, 150+(150*p));  
       
       //Setting title to the Stage 
       stage.setTitle("Uno Workout"); 
@@ -979,6 +979,8 @@ class Player {
          return acText;
       }
 }
+
+
 
 
 

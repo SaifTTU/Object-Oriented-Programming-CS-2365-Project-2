@@ -13,3 +13,5 @@ The method that adds values in the players hand was modified to contribute to th
 
 The html producing method has been completed. 
 We now just have to incorporate some javafx into our code.
+
+Just uploaded my attempt at implemented a javaFx UI. Far from finished. 

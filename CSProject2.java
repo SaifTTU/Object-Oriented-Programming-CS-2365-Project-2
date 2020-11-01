@@ -32,7 +32,6 @@ public class CSProject2 extends Application {
    
    Card cardArray[] = new Card[384];
    
-   
    @Override 
    public void start(Stage stage) throws IOException{ 
       //String output = createHTMLName();

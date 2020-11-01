@@ -21,11 +21,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
-import java.util.*;
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
+
 
 public class CSProject2 extends Application { 
    public static int p = 4; //number of players. supposed to be 1. 

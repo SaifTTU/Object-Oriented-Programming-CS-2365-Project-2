@@ -1,221 +1,344 @@
 //Spoke with instructor about adding java fx and used swing controls a little bit. 
 //Main window uses javafx
-//By Tucker Hortman and Saif Chowdhury
-//Date:
-//Name: Project 2
+//Authors Tucker Hortman 
+//Saif Chowdhury
+//Date Due: November 1st, 2020
+//Name: Project 2 - Uno Workout With GUI / HTML feature
+
+import javafx.application.Application; 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.scene.Group; 
+import javafx.scene.Scene; 
+import javafx.scene.paint.Color; //to color rectangles
+import javafx.scene.control.Button;
+import javafx.stage.Stage; 
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.*;
 import java.util.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
 
-
-public class UnoWorkout {
-    public static void main(String[] args) throws IOException {
-        
-        
-        
-        int d = option(1);
-        int p = option(2);
-        int s = option(3);
-        String output = createHTMLName();
-        
-        
-        File myFile = new File(output+".txt");
+public class UnoWorkout extends Application { 
+   public static int p = 4; //number of players. supposed to be 1. 
+   public static int d = 1; //number of decks
+   public static int s = 1; //way to shuffle together or separate
+   public static int z = 1; //for the game loop
+   public static String output;
+   Player player[] = new Player[p];
+   
+   Card cardArray[] = new Card[384];
+   
+   
+   @Override 
+   public void start(Stage stage) throws IOException{ 
+      //String output = createHTMLName();
+      File myFile = new File(output+".txt");
     	if(myFile.createNewFile()) {
     		System.out.println("File created: " + myFile.getName());
     		System.out.println("File created at: " + myFile.getAbsolutePath());
     	}
-    	FileWriter writer = new FileWriter(output+".txt");
+    	FileWriter writer = new FileWriter(myFile.getAbsolutePath());
     	writer.write("Workout");
-        
-        
-        
-        Card fakeCardArray[] = new Card[384];
-        fakeCardArray=createDeck(3, fakeCardArray); 
-        
-         
-        Scanner sc = new Scanner(System.in); // Create a Scanner object
-        System.out.println("\nHow many decks?");
-        //int d = sc.nextInt(); // Read user input
-        System.out.println("Number of Decks: " + d); // Output user input
-        System.out.println("How many players?");
-        //int p = sc.nextInt(); 
-        System.out.println("Number of players: " + p); 
-        System.out.println("Shuffling:\n1.Together\n2.Separately?");
-        //int s = sc.nextInt();
-        System.out.print("Shuffling: "); 
-        switch(s){
-            case(1):
-               System.out.println("Together");
-            break;
-            case(2):
-               System.out.println("Together");
-            break;
-            default: 
-               System.out.println("Together");
-            break;
-        }
 
-        int numberOfCards = 116;
-        int numberOfPlayers = 1;
-        
-        numberOfCards = numberOfCards * d;
-        numberOfPlayers = numberOfPlayers * p;
-        
-        
-        Card cardArray[] = new Card[numberOfCards];
-        System.out.println("\nThe number of cards: "+cardArray.length);
-        cardArray=createDeck(d, cardArray);
-        System.out.println("\nThe number of cards: "+cardArray.length);
-        
-        Player player[] = new Player[numberOfPlayers]; //number of players
-
-        for (int i = 0; i < cardArray.length; i++) {
+    	
+   
+      //Label label = new Label();
+      Group group = new Group();
+      
+      //----------------------------------------
+      //"business logic" goes here
+      for(int i=0;i<cardArray.length;i++){
+         cardArray[i] = new Card();
+      }
+      for(int i=0;i<player.length;i++){
+         player[i] = new Player();
+      }
+      Card fakeCardArray[] = new Card[384];
+      fakeCardArray=createDeck(3, fakeCardArray);
+      cardArray=createDeck(d, cardArray);
+      for (int i = 0; i < cardArray.length; i++) {
             cardArray[i] = new Card();
             cardArray[i].setData(fakeCardArray[i%(d*29)].val, fakeCardArray[i/(d)].col);
             System.out.print(cardArray[i].val + ", "+cardArray[i].col);
 
-        }
-        
-        for (int i = 0; i < player.length; i++) {
-            player[i] = new Player();
-        }
-
-        for (int i = 0; i < cardArray.length; i++) {
-            cardArray[i].showData(); //use this to show whats on one card
-        }
-        
-        if(s!=2){
-            cardArray = shuffleDeck(cardArray); //use this to shuffle your array regardless of size
+      }
+      cardArray = shuffleDeck(cardArray);
+      displayDeck(cardArray); //use this to display what the current deck looks like
+      showHand(cardArray, p); //
+      
+      //-----------------------------------------
+      //
+      
+      Rectangle Uno[][] = new Rectangle[5][4];
+      Text Una[][] = new Text[5][4]; //just named it something similar but this is the text array of the total values
+             
+      
+      for(int i=0; i<5;i++){ //initialize all.
+         for(int j=0;j<p;j++){
+            Uno[i][j] = new Rectangle();
+            Una[i][j] = new Text();
          }
-        else{
-            Card[] cardArray1 = new Card[108];
-            Card[] cardArray2 = new Card[108];
-            Card[] cardArray3 = new Card[108];
-            for (int i = 0; i < cardArray1.length; i++) {
-                  cardArray1[i] = new Card();
-                  cardArray2[i] = new Card();
-                  cardArray2[i] = new Card();
+      }
+      
+      for(int j=0; j<(p);j++){ //printing rectangles
+         for(int i=0;i<(5);i++){
+            Uno[i][j].setX(150+ (100.0f*i));
+            Uno[i][j].setY(100+ (100.0f*j));
+            Uno[i][j].setWidth(40.0f); 
+            Uno[i][j].setHeight(70.0f);
+            if(i==0){
+               Uno[i][j].setFill(Color.BLUE);
             }
+            else if(i==1){
+               Uno[i][j].setFill(Color.RED);
+            }
+            else if(i==2){
+               Uno[i][j].setFill(Color.YELLOW);
+            }
+            else if(i==3){
+               Uno[i][j].setFill(Color.GREEN);
+            }
+            group.getChildren().add(Uno[i][j]); 
+         }
+      }
+      String value;
+      for(int j=0; j<(p);j++){ //printing text
+         for(int i=0;i<(5);i++){
+            Una[i][j].setX(164+ (100.0f*i));
+            Una[i][j].setY(140+ (100.0f*j));
+            if(i==0){
+               value = Integer.toString(player[0].totalPushup);
+               Una[i][j].setText(value);
+               Una[i][j].setFill(Color.WHITE);  
+            }
+            else if(i==1){
+               value = Integer.toString(player[0].totalLunge);
+               Una[i][j].setText(value);
+               Una[i][j].setFill(Color.WHITE);
+            }
+            else if(i==2){
+               value = Integer.toString(player[0].totalSquat);
+               Una[i][j].setText(value);
+               Una[i][j].setFill(Color.BLACK); //because if its Yellow, text should be black
+            }
+            else if(i==3){
+               value = Integer.toString(player[0].totalSitup);
+               Una[i][j].setText(value);
+               Una[i][j].setFill(Color.WHITE);
+            }
+            else if(i==4){
+               value = Integer.toString(player[0].totalBurpe);
+               Una[i][j].setText(value);
+               Una[i][j].setFill(Color.WHITE);
+            }
+            Una[i][j].setFont(new Font(20));
+            group.getChildren().add(Una[i][j]); 
+         }
+      }
+      
+     Button proceed = new Button("Proceed");
+     Button end = new Button("End");
+     proceed.setLayoutX(150.0f); 
+     end.setLayoutX(550.0f); 
+     proceed.setLayoutY(75+ (125.0f*p));  //like the setX for buttons
+     end.setLayoutY(75+ (125.0f*p)); 
+     
+     proceed.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 1
+             @Override public void handle(ActionEvent e) {
+                 
+                    if(cardArray.length>=7){
+                       cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
+                       System.out.println("\nNew Deck: ");
+                       displayDeck(cardArray);
+                       updateHand(player,cardArray,p);
+                       showHand(cardArray, p);
+                       //showWorkOut(player);
+                       player=sortHand(player);
+                       player=actionCard(player,cardArray);
+                       cardArray=containsReverse(cardArray, p);
+                       player=showWorkOut(player);
+                    }
+
+                    
+                    
+                    
+                    //System.out.println("\n1. Proceed... (Exit = 0)");
+                    
+                    //z = sc.nextInt();
+                    
+                    if(cardArray.length<7){
+                    printTot(player);
+                    System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
+                    //z =0;                
+                    }
+        }
+      });
+      
+      end.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 2
+             @Override public void handle(ActionEvent e){
+            	printTot(player);
+            	 
+            	try {
+            	FileWriter writer2 = new FileWriter(myFile.getAbsolutePath());
+            	 
+                System.out.println(player[0].totalBurpe);
+            	writer2.write("Work Out");          	 
+
+            	writer2.write("\n\n----------TOTALS--------\n\n");
+              	
+              	for(int i = 0; i < player.length; i++)
+              	{
+              		writer2.write("\nPlayer: " + (i+1));
+              		writer2.write("\nTotal Pushups: " + player[i].totalPushup);
+              		writer2.write("\nTotal Squats: " + player[i].totalSquat);
+              		writer2.write("\nTotal Situps: " + player[i].totalSitup);
+              		writer2.write("\nTotal Lunges: " + player[i].totalLunge);
+              		writer2.write("\nTotal Burpes: " + player[i].totalBurpe);
+              	}
+              	
+              	writer2.close();} catch (Exception e1)
+            	{
+              		System.out.println("Caught writer 2 errror...");
+            	}
+            	  
+                  System.out.println("File created at: " + myFile.getAbsolutePath());
+                  
+                  createHTML(output); //output = a string with the text name, this method is going to look for it
+
+                  
+                
+                  
+                  
+    
+             }
         
-            cardArray1 = shuffleDeck(cardArray); //shuffle each array separately before adding them all together in a big loop
-            cardArray2 = shuffleDeck(cardArray);
-            cardArray3 = shuffleDeck(cardArray); 
-            //int count = 0; //the count was for testing purposes
-            for(int i=0; i<116;i++){
-               cardArray[i]=cardArray1[i];
-               //count++;
-               //System.out.println(count+"). "+cardArray[i].col+cardArray[i].val);
-            }
-            if(d>1)
-            for(int i=0; i<116;i++){
-               cardArray[i+115]=cardArray2[i];
-               //count++;
-               //System.out.println(count+"). "+cardArray[i].col+cardArray[i].val);
+      });
+     
+     
+     
+     
+     
+     
+     
+     
+     group.getChildren().add(proceed);
+     group.getChildren().add(end);
+      
+      
+     
+      
+      //Creating a scene object 
+      Scene scene = new Scene(group, 750, 150+(150*p));  
+      
+      //Setting title to the Stage 
+      stage.setTitle("Uno Workout"); 
+         
+      //Adding scene to the stage 
+      stage.setScene(scene); 
+         
+      //Displaying the contents of the stage 
+      stage.show(); 
+      
+     //dispTotals(player ,writer);
+      //System.out.println(player[1].totalPushup + " Total pushups");
+  	
+  	  writer.close();
+   }      
+   
+   //Method
+    //Type: Card[] - since this is the birth of our deck, the return value is a Card[] the entire set of 108-316 cards (of however many there is)
+    //Name: createDeck
+    //Functionality: shows the workout of the current turn for all players.
+    //Parameters: int d - how many decks there are, Card[] cardArray - anempty Card array that will soon hold new values when we return it.
+    public static Card[] createDeck(int d, Card[] cardArray){
+         int val[] ={0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,15}; //the correct number of cards specified to the deck description
+         char col[] ={'B','Y','R','G'}; //anything that goes past 10 is an "action card" and will have special effects on the workout.
+         int numberOfDecks=d; //here we match the given number to the one from the method we created earlier
+         
+         Card oneDeck[]=new Card[val.length*4];
+         Card card[]=new Card[val.length*4*numberOfDecks];
+         for(int j=0; j<numberOfDecks;j++){
+               System.out.println("\nDeck: "+(j+1));
+               for(int i=0;i<oneDeck.length;i++){
+                  oneDeck[i] = new Card(); //first we created a test deck called one deck and then set the created deck equal to card 
+                  card[i*j] = new Card(); //and then we'll set card equal to cardArray and return cardArray
+                  //for(int j=0;j<4;j++){
+                  oneDeck[i].setData(val[i%29],col[i/29]); //utilizing modulus and char division to create the exam dimensions of real deck
+                  //System.out.print(oneDeck[i].a+""+oneDeck[i].col+", ");
+                  card[i*j]=oneDeck[i];
+                  if((card[i*j].val)<=10)
+                     System.out.print(card[i*j].val+""+card[i*j].col+", ");
+                        
+                  
+                  
+                  if(card[i*j].val==11){//setup the skip card
+                     //card[i*j].a=0;
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
+                     System.out.print(card[i*j].col+"[Skip], ");
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].val==12){//setup the draw 2 card
+                     //card[i*j].a=0;
+                     //card[i*j].col='D';
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
+                     System.out.print(card[i*j].col+"[D2], ");
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].val==13){//setup the reverse card
+                     //card[i*j].a=0;
+                     //card[i*j].col='E';
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
+                     System.out.print(card[i*j].col+"[Reverse], ");
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].val==14){//setup the wild card
+                     //card[i*j].a=0;
+                     System.out.print("[WILD], ");
+                     //card[i*j].col='W';
+                     card[i*j].actionCard =true;
+                  }
+                  if(card[i*j].val==15){//setup the wild card
+                     //card[i*j].col='F';
+                     //card[i*j].val=4;
+                     System.out.print("[WILD D4], ");
+                     card[i*j].actionCard =true;
+                  }
+                  
+                  //E is for reverse (because R was already taken)
                }
-            if(d>2)
-            for(int i=0; i<116;i++){
-               cardArray[i+231]=cardArray2[i];
-               //count++;
-               //System.out.println(count+"). "+cardArray[i].col+cardArray[i].val);
             }
-            
-         }
-        displayDeck(cardArray); //use this to display what the current deck looks like
-
-        showHand(cardArray, p); //
-        
-        //add cards to the bottom of the deck
-        /*
-        Card fakeCard = new Card();
-        fakeCard.val = 2;
-        fakeCard.col = 'B';
-        cardArray = addTo(cardArray, fakeCard); 
-        */
-        
-   //Game Loop: any type of program that has repeating elements needs a game loop, a way to for the player 
-	//or user to iterate every turn. We have several of these methods repeat each turn. 
-	//For example, removeFrom() method removes a certain number of cards per the number of players each turn
-	//display deck is mainly for us to debug and keep track of how many cards are in the deck
-	//and see if it matches the players' hands. 
-	//updateHand changes the values in the player[]'s int and char arrays
-	//showHand, an old version of of sortHand which I decided to keep to show presorting, show's unsorted hands
-	//in sortHand, we utilize bubbling sorting 4 times to get them in the best order: first we order them based on their color,
-	//and then value. The reason we had to do this 4 times instead of 2 was because we used separate arrays for the value and color
-	//which then needed to be sorted correctly based on their indexes
-	//after this we implemented the actionCard method. This method utlizes several other methods like skip and reverse to modify workout values
-	//showWorkout also utlizes the player arrays and the reason this is not void is beacuse we attached total values to the player class/objects
-	//And finally I added an additional text that appears when there arent anycards remaining because I felt like our previous warnings werent specific enough
-	//That way the player knows to press 0 to save their code. We chose to do this because, to be honestly since there were two of us who wrote it, 
-	//each with a different approach. this is like the combination of our approach. 
-
-        int z=1;
-        while(z!=0)
-        {
-           //cardArray = containsReverse(cardArray, p, 7);
-           cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
-           System.out.println("\nNew Deck: ");
-           displayDeck(cardArray);
-           updateHand(player,cardArray,p);
-           showHand(cardArray, p);
-           //showWorkOut(player);
-           player=sortHand(player);
-           player=actionCard(player,cardArray);
-           player=showWorkOut(player);
-           System.out.println("\n1. Proceed... (Exit = 0)");
-           
-           z = sc.nextInt();
-           
-           if(cardArray.length<7){
-               System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
-               z =0;
-               
-           }
-           
-           
-        }
-        
-        dispTotals(player, writer); //it sort of "Saves As" on the file
-        
-        writer.close();
-        System.out.println("File created at: " + myFile.getAbsolutePath());
-        
-        createHTML(output); //output = a string with the text name, this method is going to look for it
+         cardArray=card;
+         return cardArray;
     }
-    //Class or Method: Method
-    //Type: void
-    //Name: displayDeck
-    //Functionality: outputs every element in the array in the order it is given
-    //Parameters: cardArray
-    //Utilizes card objects' showData() method to display value int and color char
-    public static void displayDeck(Card[] cardArray) {
-        for (int i = 0; i < cardArray.length; i++) {
-            cardArray[i].showData();
-        }
+
+    public static void updateTotals(Player[] player )
+    {
+    	
     }
     
-    //Method
-    //Type: void
-    //Name: dispTotals
-    //Functionality: writes total workouts for each player into the output file
-    //Parameters: player[] - an array of all the players, writer - the file writer,
-    //Utilizes player objects' totalPushup, totalLunge etc. values
-    public static void dispTotals(Player[] player, FileWriter writer) throws IOException {
-    	
-    	writer.write("\n\n----------TOTALS--------\n\n");
-    	
-    	for(int i = 0; i < player.length; i++)
-    	{
-    		writer.write("\nPlayer: " + (i+1));
-    		writer.write("\nTotal Pushups: " + player[i].totalPushup);
-    		writer.write("\nTotal Squats: " + player[i].totalSquat);
-    		writer.write("\nTotal Situps: " + player[i].totalSitup);
-    		writer.write("\nTotal Lunges: " + player[i].totalLunge);
-         writer.write("\nTotal Burpes: " + player[i].totalBurpe);
-    	}
+    
+   //Method
+    //Type: Card object
+    //Name: shuffleDeck
+    //Functionality: shuffles deck
+    //Parameters: cardArray - the deck of all cards
+    //turns array of card objects into a list and then shuffles them and converts it back to array before returning the new Array value
+    public static Card[] shuffleDeck(Card[] cardArray) {
+        List < Card > cardList = Arrays.asList(cardArray); //card Array to to cardList, shuffled and then back to Array 
+
+        Collections.shuffle(cardList);
+
+        cardList.toArray(cardArray);
+
+        System.out.println("\nShuffling deck... ");
+
+        return cardArray;
     }
-    //Method
+   //Method
     //Type: void
     //Name: showHand
     //Functionality: shows the unsorted hands of each of the players, with action cards.
@@ -249,28 +372,254 @@ public class UnoWorkout {
             }
         }
     }
-
-    //Method
-    //Type: Card object
-    //Name: shuffleDeck
-    //Functionality: shuffles deck
-    //Parameters: cardArray - the deck of all cards
-    //turns array of card objects into a list and then shuffles them and converts it back to array before returning the new Array value
-    public static Card[] shuffleDeck(Card[] cardArray) {
-        List < Card > cardList = Arrays.asList(cardArray); //card Array to to cardList, shuffled and then back to Array 
-
-        Collections.shuffle(cardList);
-
-        cardList.toArray(cardArray);
-
-        System.out.println("\nShuffling deck... ");
-
-        return cardArray;
+    
+   //Class or Method: Method
+    //Type: void
+    //Name: displayDeck
+    //Functionality: outputs every element in the array in the order it is given
+    //Parameters: cardArray
+    //Utilizes card objects' showData() method to display value int and color char
+    public static void displayDeck(Card[] cardArray) {
+        for (int i = 0; i < cardArray.length; i++) {
+            cardArray[i].showData();
+        }
     }
     
-    
-    
-    
+    //Method
+    //Type: Card[] object array - returns the entire deck 
+    //Name: removeFrom
+    //Functionality: removes several cards from the front of the deck at a time, based on how many players there are
+    //so if there are 3 players, remove 3*7 cards from the deck and return the new deck
+    //Parameters: cardArray - the deck, people - the number of players, hand - the number of cards in the players hand (it is always 7)
+    public static Card[] removeFrom(Card[] cardArray, int people, int hand) {
+        System.out.println("\nRemoving the following " + (people * 7) + " cards from the top of the deck: ");
+
+        int amountToRemove = people * hand;
+        try {
+            Card[] newArray = new Card[cardArray.length - amountToRemove];
+            for (int i = 0; i < amountToRemove; i++) {
+                System.out.print((cardArray[i].val) + "" + (cardArray[i].col) + ", ");
+            }
+            for (int i = 0; i < newArray.length; i++) {
+                newArray[i] = cardArray[i + amountToRemove];
+            }
+            return newArray;
+        } catch (Exception e) {
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            return cardArray;
+        }
+    }
+
+   //Method
+    //Type: Player[] object array - all players
+    //Name: updateHand
+    //Functionality: is needed to match the players hand to the right amount of cards in the deck
+    //Parameters: cardArray - the deck, player[] - Player(s), numberOfPlayers
+    public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
+       try {
+          for(int j=0; j<numberOfPlayers;j++){
+                for(int i=j*7; i<(player[j].col.length +j*7);i++){
+                     player[j].val[i%7]=cardArray[i].val;
+                     //System.out.print(cardArray[i].col);
+                     player[j].col[i%7]=cardArray[i].col;
+                }
+          }
+          return player;
+       }
+       catch (Exception e) {
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            //commented this out: but it prints what the total is in the textbox
+            /*for(int i=0;i<player.length;i++){
+            System.out.print("\n*                 Player "+(i+1)+"       "+player[i].totalPushup+"       "+player[i].totalSquat+"       "
+            +player[i].totalSitup+"       "+player[i].totalLunge+"      "+player[i].totalBurpe+"          *");
+            } */
+            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            return player;
+        }
+    }
+    //Method
+    //Type: Player[] an object array of Player class - all of the players
+    //Name: showWorkOut
+    //Functionality: shows the workout of the current turn for all players.
+    //Parameters: cardArray - player[] - all players
+    public static Player[] showWorkOut(Player[] player){
+         int pushups; //blue
+         int squats; //yellow
+         int situps; //red
+         int lunges; //green
+         int burpes;
+         boolean[] draw2 = { false, false, false, false};
+         for(int i=0; i<player.length;i++){
+               pushups = 0; //blue
+               squats = 0; //yellow
+               situps = 0; //red
+               lunges = 0; //green
+               burpes = 0; //wild cards
+               System.out.println("\nPlayer "+(i+1)+":"); 
+               for(int j=0; j<player[i].val.length; j++){
+                 if(player[i].val[j]<11)
+                 {
+                     if(player[i].col[j]=='R'){
+                           //System.out.println(player[i].val[j]); //Moved this towards the bottom underneath the draw 2 method (its still in for loop) (it still works)
+                           situps = situps + player[i].val[j];
+                           //player[i].totalSitup += situps;
+                        }
+                     if(player[i].col[j]=='B'){
+                           pushups = pushups + player[i].val[j]; 
+                           //player[i].totalPushup += pushups;
+                        }
+                     if(player[i].col[j]=='Y'){
+                           squats = squats + player[i].val[j];
+                           //player[i].totalSquat += squats;
+                        }
+                     if(player[i].col[j]=='G'){
+                           lunges = lunges + player[i].val[j]; 
+                           //player[i].totalLunges += lunges;
+                        }
+                  }
+                  if(player[i].val[j]==12){
+                        if(player[i].col[j]=='B')
+                           draw2[0]=true;
+                        if(player[i].col[j]=='Y')
+                           draw2[1]=true;
+                        if(player[i].col[j]=='R')
+                           draw2[2]=true;
+                        if(player[i].col[j]=='G')
+                           draw2[3]=true;
+                  }
+                  if(player[i].val[j]==14){
+                        burpes = burpes + 4; //if its a Wild Card
+                        
+
+                  }
+                  if(player[i].val[j]==15){
+                        burpes = burpes * 4; //if its a Wild Draw 4
+                  } 
+                  
+               }
+               
+               
+               if(draw2[0]==true)
+               pushups=pushups*2;
+               if(draw2[1]==true)
+               squats=squats*2;   
+               if(draw2[2]==true)
+               situps=situps*2;   
+               if(draw2[3]==true)
+               lunges=lunges*2;
+               
+               player[i].totalSitup += situps; //I had had to change its location to appear after draw 2's occured
+               player[i].totalPushup += pushups; //cause before it was printing way too few and I think this is why
+               player[i].totalSquat += squats;
+               player[i].totalLunge += lunges;
+               player[i].totalBurpe += burpes;
+               
+               System.out.println("Pushups: "+ pushups );
+               System.out.println("Squats: "+ squats );
+               System.out.println("Situps: "+ situps );
+               System.out.println("Lunges: "+ lunges );
+               if(burpes!=0) //It only prints Burpes if they have them. Should we always include it? Idk kinda liked 4 displayed by default better.
+               System.out.println("Burpes: "+ burpes );
+         }
+         
+         return player; //returns "players" actually. (player[]) 
+    }
+    //Method
+    //Type: Player[] object array
+    //Name: sortHand
+    //Functionality: sorts hand
+    //utlizes bubble sort algorithm (4 times) to sort player's hand based on value and color
+    //(we did this 4 times because the player array has separate array variables instead of char arrays, because this
+    //made it much easier to call them in several parts of our project, the 2nd and 4th loop put the respective col and val back with their corrrect corresponding value or color
+    //Parameters: player[] object array
+    public static Player[] sortHand(Player[] player) {  
+        int n = 7;  
+        boolean takeARest = false;
+        int temp = 0; 
+        char tempChar = 'B'; 
+            for(int k=0;k<player.length;k++){
+            
+               
+              
+               for(int i=0; i < n; i++){  //sorting numbers
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].val[j-1] > player[k].val[j]){  
+                                        
+                                       temp = player[k].val[j-1];  
+                                       player[k].val[j-1] = player[k].val[j];  
+                                       player[k].val[j] = temp;  
+                                       
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;
+                               }  
+                                
+                       }  
+               }
+               
+               for(int i=0; i < n; i++){  //sorting colors
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].col[j-1] > player[k].col[j]){  
+                                        
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;  
+                                       
+                                       temp = player[k].val[j-1];  
+                                       player[k].val[j-1] = player[k].val[j];  
+                                       player[k].val[j] = temp;
+                               }  
+                                
+                       }  
+               }
+               
+               System.out.print("\nNew Player "+(k+1)+"'s Hand: ");
+               //for(int i=0; i < player.length; i++){
+                     for(int j=0; j < n; j++){ 
+                           if(player[k].val[j]<11&&player[k].val[j]!=0){
+                              System.out.print(" "+player[k].val[j]+""+player[k].col[j]);
+                              }
+                           else if(player[k].val[j]==11){ //doesnt work yet, I'd have to fix it later
+                              System.out.print("  "+player[k].col[j]+" Skip ");
+                              }
+                           else if(player[k].val[j]==12){
+                              System.out.print("  "+player[k].col[j]+" Draw 2 ");
+                              }
+                           else if(player[k].val[j]==13){
+                              System.out.print("  "+player[k].col[j]+" Reverse ");
+                              }
+                          else if(player[k].val[j]==14){
+                              System.out.print(" WILD");
+                              }
+                          else if(player[k].val[j]==15){
+                              System.out.print("  WILD Draw 4  ");
+                              }
+                          else if(player[k].val[j]==0){
+                              takeARest=true;
+                              }
+                              
+                     }
+                     if(takeARest ==true){
+                        System.out.print("\n(Take a two minute rest)");
+                     }
+                     
+               //} 
+               
+          }
+          return player;
+  
+    }
     //Method
     //Type: Player object array
     //Name: actionCard
@@ -365,6 +714,62 @@ public class UnoWorkout {
     }
     
     //Method
+    //Type: Card[] object array - returns the entire deck essentially
+    //Name: addTo
+    //Functionality: adds 1 card to the back of the deck at a time
+    //Parameters: cardArray - the original deck, and a predifined card object fakeCard
+    public static Card[] addTo(Card[] cardArray, Card fakeCard) {
+        System.out.print(" [Adding " + fakeCard.val + "" + fakeCard.col + " to the back of the deck], ");
+        Card[] newArray = new Card[cardArray.length + 1];
+        for (int i = 0; i < cardArray.length; i++) {
+            newArray[i] = cardArray[i];
+        }
+        newArray[cardArray.length] = fakeCard;
+        return newArray;
+    }
+   //Method
+    //Type: Card[]
+    //Name: contains Reverse
+    //Functionality: adds cards back to card[] because previous version did not add to back of deck as it was a Player[] not a Card[]
+   public static Card[] containsReverse(Card[] cardArray, int p){
+         int n;
+         for(int i=0;i<p;i++){
+            for(int j=0;j<7;j++){
+               n=((j)+(7*i));
+               if(cardArray[n].val==11){
+                  System.out.println(cardArray[n].col+" Reverse Detected in "+ (i+1)+"'s hand."); //couldnt print colText because color had to be removed?
+                  for(int k=0;k<7;k++){
+                     if(cardArray[n].col==cardArray[((k+n)-1)].col && cardArray[((k+n)-1)].val<11){
+                        //System.out.println("Card "+ cardArray[((k+n)-1)].col+""+cardArray[((k+n)-1)].val+" added back to the back of the deck");
+                        cardArray=addTo(cardArray, cardArray[((k+n)-1)]);
+                     }
+                  }
+               }
+            }
+         }
+         
+         return cardArray;
+   }   
+   //Method
+    //Type: Card[]
+    //Parameter: Player[] player
+    //Name: contains printTot
+    //Functionality: examines Player total values and displays them in the console output
+   public static void printTot(Player[] player){
+      System.out.println("\nTotals");
+      System.out.println("--------------------------------------------------");
+      for(int i=0;i<player.length;i++){
+          System.out.println("Player: " + (i+1));
+          System.out.println("\tPushups: " + player[i].totalPushup);
+          System.out.println("\tSitups: " + player[i].totalSitup);
+          System.out.println("\tSquats: " + player[i].totalSquat);
+          System.out.println("\tLunges: " + player[i].totalLunge);
+          System.out.println("\tBurpes: " + player[i].totalBurpe);
+      }
+      System.out.println("--------------------------------------------------");
+   }
+   
+    //Method
     //Type: Player object
     //Name: draw2
     //Functionality: goes through the player hand and multiplies the total amount to add for workouts by two if the color is matched to the one given
@@ -381,403 +786,9 @@ public class UnoWorkout {
          System.out.print("**Double values for "+col+". Total "+col+" values becomes:"+total+"! **,"); 
          return player; //returns player object
     }
-    
-    //Method
-    //Type: Player[] object array
-    //Name: sortHand
-    //Functionality: sorts hand
-    //utlizes bubble sort algorithm (4 times) to sort player's hand based on value and color
-    //(we did this 4 times because the player array has separate array variables instead of char arrays, because this
-    //made it much easier to call them in several parts of our project, the 2nd and 4th loop put the respective col and val back with their corrrect corresponding value or color
-    //Parameters: player[] object array
-    public static Player[] sortHand(Player[] player) {  
-        int n = 7;  
-        boolean takeARest = false;
-        int temp = 0; 
-        char tempChar = 'B'; 
-            for(int k=0;k<player.length;k++){
-            
-               
-              
-               for(int i=0; i < n; i++){  //sorting numbers
-                       for(int j=1; j < (n-i); j++){  
-                                if(player[k].val[j-1] > player[k].val[j]){  
-                                        
-                                       temp = player[k].val[j-1];  
-                                       player[k].val[j-1] = player[k].val[j];  
-                                       player[k].val[j] = temp;  
-                                       
-                                       tempChar = player[k].col[j-1];  
-                                       player[k].col[j-1] = player[k].col[j];  
-                                       player[k].col[j] = tempChar;
-                               }  
-                                
-                       }  
-               }
-               
-               for(int i=0; i < n; i++){  //sorting colors
-                       for(int j=1; j < (n-i); j++){  
-                                if(player[k].col[j-1] > player[k].col[j]){  
-                                        
-                                       tempChar = player[k].col[j-1];  
-                                       player[k].col[j-1] = player[k].col[j];  
-                                       player[k].col[j] = tempChar;  
-                                       
-                                       temp = player[k].val[j-1];  
-                                       player[k].val[j-1] = player[k].val[j];  
-                                       player[k].val[j] = temp;
-                               }  
-                                
-                       }  
-               }
-               
-               System.out.print("\nNew Player "+(k+1)+"'s Hand: ");
-               //for(int i=0; i < player.length; i++){
-                     for(int j=0; j < n; j++){ 
-                           if(player[k].val[j]<11&&player[k].val[j]!=0){
-                              System.out.print(" "+player[k].val[j]+""+player[k].col[j]);
-                              }
-                           else if(player[k].val[j]==11){ //doesnt work yet, I'd have to fix it later
-                              System.out.print("  "+player[k].col[j]+" Skip ");
-                              }
-                           else if(player[k].val[j]==12){
-                              System.out.print("  "+player[k].col[j]+" Draw 2 ");
-                              }
-                           else if(player[k].val[j]==13){
-                              System.out.print("  "+player[k].col[j]+" Reverse ");
-                              }
-                          else if(player[k].val[j]==14){
-                              System.out.print(" WILD");
-                              }
-                          else if(player[k].val[j]==15){
-                              System.out.print("  WILD Draw 4  ");
-                              }
-                          else if(player[k].val[j]==0){
-                              takeARest=true;
-                              }
-                              
-                     }
-                     if(takeARest ==true){
-                        System.out.print("\n(Take a two minute rest)");
-                     }
-                     
-               //} 
-               
-          }
-          return player;
-  
-    }
-	
-    //Method
-    //Type: Card[] object array - returns the entire deck essentially
-    //Name: addTo
-    //Functionality: adds 1 card to the back of the deck at a time
-    //Parameters: cardArray - the original deck, and a predifined card object fakeCard
-    public static Card[] addTo(Card[] cardArray, Card fakeCard) {
-        System.out.print(" [Adding " + fakeCard.val + "" + fakeCard.col + " to the back of the deck], ");
-        Card[] newArray = new Card[cardArray.length + 1];
-        for (int i = 0; i < cardArray.length; i++) {
-            newArray[i] = cardArray[i];
-        }
-        newArray[cardArray.length] = fakeCard;
-        return newArray;
-    }
-    
-    //Method
-    //Type: Card[] object array - returns the entire deck 
-    //Name: removeFrom
-    //Functionality: removes several cards from the front of the deck at a time, based on how many players there are
-    //so if there are 3 players, remove 3*7 cards from the deck and return the new deck
-    //Parameters: cardArray - the deck, people - the number of players, hand - the number of cards in the players hand (it is always 7)
-    public static Card[] removeFrom(Card[] cardArray, int people, int hand) {
-        System.out.println("\nRemoving the following " + (people * 7) + " cards from the top of the deck: ");
 
-        int amountToRemove = people * hand;
-        try {
-            Card[] newArray = new Card[cardArray.length - amountToRemove];
-            for (int i = 0; i < amountToRemove; i++) {
-                System.out.print((cardArray[i].val) + "" + (cardArray[i].col) + ", ");
-            }
-            for (int i = 0; i < newArray.length; i++) {
-                newArray[i] = cardArray[i + amountToRemove];
-            }
-            return newArray;
-        } catch (Exception e) {
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
-            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            return cardArray;
-        }
-    }
     
-    //Method
-    //Type: Player[] object array - all players
-    //Name: updateHand
-    //Functionality: is needed to match the players hand to the right amount of cards in the deck
-    //Parameters: cardArray - the deck, player[] - Player(s), numberOfPlayers
-    public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
-       try {
-          for(int j=0; j<numberOfPlayers;j++){
-                for(int i=j*7; i<(player[j].col.length +j*7);i++){
-                     player[j].val[i%7]=cardArray[i].val;
-                     //System.out.print(cardArray[i].col);
-                     player[j].col[i%7]=cardArray[i].col;
-                }
-          }
-          return player;
-       }
-       catch (Exception e) {
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
-            //commented this out: but it prints what the total is in the textbox
-            /*for(int i=0;i<player.length;i++){
-            System.out.print("\n*                 Player "+(i+1)+"       "+player[i].totalPushup+"       "+player[i].totalSquat+"       "
-            +player[i].totalSitup+"       "+player[i].totalLunge+"      "+player[i].totalBurpe+"          *");
-            } */
-            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
-            System.out.print("\n*                                                                             *");
-            System.out.print("\n*                                                                             *");
-            return player;
-        }
-    }
-    
-    //Method
-    //Type: Player[] an object array of Player class - all of the players
-    //Name: showWorkOut
-    //Functionality: shows the workout of the current turn for all players.
-    //Parameters: cardArray - player[] - all players
-    public static Player[] showWorkOut(Player[] player){
-         int pushups; //blue
-         int squats; //yellow
-         int situps; //red
-         int lunges; //green
-         int burpes;
-         boolean[] draw2 = { false, false, false, false};
-         for(int i=0; i<player.length;i++){
-               pushups = 0; //blue
-               squats = 0; //yellow
-               situps = 0; //red
-               lunges = 0; //green
-               burpes = 0; //wild cards
-               System.out.println("\nPlayer "+(i+1)+":"); 
-               for(int j=0; j<player[i].val.length; j++){
-                 if(player[i].val[j]<11)
-                 {
-                     if(player[i].col[j]=='R'){
-                           //System.out.println(player[i].val[j]); //Moved this towards the bottom underneath the draw 2 method (its still in for loop) (it still works)
-                           situps = situps + player[i].val[j];
-                           //player[i].totalSitup += situps;
-                        }
-                     if(player[i].col[j]=='B'){
-                           pushups = pushups + player[i].val[j]; 
-                           //player[i].totalPushup += pushups;
-                        }
-                     if(player[i].col[j]=='Y'){
-                           squats = squats + player[i].val[j];
-                           //player[i].totalSquat += squats;
-                        }
-                     if(player[i].col[j]=='G'){
-                           lunges = lunges + player[i].val[j]; 
-                           //player[i].totalLunges += lunges;
-                        }
-                  }
-                  if(player[i].val[j]==12){
-                        if(player[i].col[j]=='B')
-                           draw2[0]=true;
-                        if(player[i].col[j]=='Y')
-                           draw2[1]=true;
-                        if(player[i].col[j]=='R')
-                           draw2[2]=true;
-                        if(player[i].col[j]=='G')
-                           draw2[3]=true;
-                  }
-                  if(player[i].val[j]==14){
-                        burpes = burpes + 4; //if its a Wild Card
-                        
-
-                  }
-                  if(player[i].val[j]==15){
-                        burpes = burpes * 4; //if its a Wild Draw 4
-                  } 
-                  
-               }
-               
-               
-               if(draw2[0]==true)
-               pushups=pushups*2;
-               if(draw2[1]==true)
-               squats=squats*2;   
-               if(draw2[2]==true)
-               situps=situps*2;   
-               if(draw2[3]==true)
-               lunges=lunges*2;
-               
-               player[i].totalSitup += situps; //I had had to change its location to appear after draw 2's occured
-               player[i].totalPushup += pushups; //cause before it was printing way too few and I think this is why
-               player[i].totalSquat += squats;
-               player[i].totalLunge += lunges;
-               player[i].totalBurpe += burpes;
-               
-               System.out.println("Pushups: "+ pushups );
-               System.out.println("Squats: "+ squats );
-               System.out.println("Situps: "+ situps );
-               System.out.println("Lunges: "+ lunges );
-               if(burpes!=0) //It only prints Burpes if they have them. Should we always include it? Idk kinda liked 4 displayed by default better.
-               System.out.println("Burpes: "+ burpes );
-         }
-         
-         return player; //returns "players" actually. (player[]) 
-    }
-    
-    //Method
-    //Type: Card[] - since this is the birth of our deck, the return value is a Card[] the entire set of 108-316 cards (of however many there is)
-    //Name: createDeck
-    //Functionality: shows the workout of the current turn for all players.
-    //Parameters: int d - how many decks there are, Card[] cardArray - anempty Card array that will soon hold new values when we return it.
-    public static Card[] createDeck(int d, Card[] cardArray){
-         int val[] ={0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,15}; //the correct number of cards specified to the deck description
-         char col[] ={'B','Y','R','G'}; //anything that goes past 10 is an "action card" and will have special effects on the workout.
-         int numberOfDecks=d; //here we match the given number to the one from the method we created earlier
-         
-         Card oneDeck[]=new Card[val.length*4];
-         Card card[]=new Card[val.length*4*numberOfDecks];
-         for(int j=0; j<numberOfDecks;j++){
-               System.out.println("\nDeck: "+(j+1));
-               for(int i=0;i<oneDeck.length;i++){
-                  oneDeck[i] = new Card(); //first we created a test deck called one deck and then set the created deck equal to card 
-                  card[i*j] = new Card(); //and then we'll set card equal to cardArray and return cardArray
-                  //for(int j=0;j<4;j++){
-                  oneDeck[i].setData(val[i%29],col[i/29]); //utilizing modulus and char division to create the exam dimensions of real deck
-                  //System.out.print(oneDeck[i].a+""+oneDeck[i].col+", ");
-                  card[i*j]=oneDeck[i];
-                  if((card[i*j].val)<=10)
-                     System.out.print(card[i*j].val+""+card[i*j].col+", ");
-                        
-                  
-                  
-                  if(card[i*j].val==11){//setup the skip card
-                     //card[i*j].a=0;
-                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
-                     System.out.print(card[i*j].col+"[Skip], ");
-                     card[i*j].actionCard =true;
-                  }
-                  if(card[i*j].val==12){//setup the draw 2 card
-                     //card[i*j].a=0;
-                     //card[i*j].col='D';
-                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
-                     System.out.print(card[i*j].col+"[D2], ");
-                     card[i*j].actionCard =true;
-                  }
-                  if(card[i*j].val==13){//setup the reverse card
-                     //card[i*j].a=0;
-                     //card[i*j].col='E';
-                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
-                     System.out.print(card[i*j].col+"[Reverse], ");
-                     card[i*j].actionCard =true;
-                  }
-                  if(card[i*j].val==14){//setup the wild card
-                     //card[i*j].a=0;
-                     System.out.print("[WILD], ");
-                     //card[i*j].col='W';
-                     card[i*j].actionCard =true;
-                  }
-                  if(card[i*j].val==15){//setup the wild card
-                     //card[i*j].col='F';
-                     //card[i*j].val=4;
-                     System.out.print("[WILD D4], ");
-                     card[i*j].actionCard =true;
-                  }
-                  
-                  //E is for reverse (because R was already taken)
-               }
-            }
-         cardArray=card;
-         return cardArray;
-    }
-    
-    //Method
-    //Type: Card[]
-    //Name: containsReverse
-    //Functionality: needed to check if each player has a reverse , check what color they are
-    //and to reset the deck to have only those specific cards sent back to the bottom of the deck
-    //Parameters: Card[] cardArray - deck, int p - number of players , int hand - number of cards per player
-    public static Card[] containsReverse(Card[] cardArray, int p, int hand){
-       boolean[] redReverse={false,false,false,false};//per player
-       boolean[] blueReverse={false,false,false,false};
-       boolean[] greenReverse={false,false,false,false};
-       boolean[] yellowReverse={false,false,false,false};
-       
-         for(int i=0; i<p;i++){
-            for(int j=0; j<hand;j++){
-                  if(cardArray[j].val==13){
-                     if(cardArray[j].col=='R')
-                        redReverse[i]=true;
-                     if(cardArray[j].col=='B')
-                        blueReverse[i]=true;
-                     if(cardArray[j].col=='G')
-                        greenReverse[i]=true;
-                     if(cardArray[j].col=='Y')
-                        yellowReverse[i]=true;
-                  }
-            }
-         }
-         for(int i=0; i<p;i++){
-            for(int j=0; j<hand;j++){
-               if(redReverse[i]==true){
-                   
-               }
-            }   
-         }
-         
-         Card[] newArray= new Card[cardArray.length];
-         
-         
-         return cardArray;
-    }
-    
-	
-    //Method
-    //Type: int
-    //Name: option
-    //Functionality: I created a few GUI based options and put them in a method for the player at the start.
-    //Asks them how many players, how many decks, and if they will be shuffling together or separately
-    //Parameters: int o - short for option. o basically means each of the many option dialog boxes to print and what to return.
-    //rather than creating several methods for each option, I though to number them in this manner instead. 
-    public static int option(int o){
-         int option=1;
-         if(o==1){
-            Integer[] options = {1, 2, 3};
-            option = JOptionPane.showOptionDialog(null, "How many decks?",
-                "Number of Decks",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,null);
-         
-         }
-         if(o==2){
-            Integer[] options = {1,2,3,4};
-            option = JOptionPane.showOptionDialog(null, "How many players?",
-                "Number of Players",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
-         }
-         if(o==3){
-            String[] options = {"Together", "Separately"};
-            option = JOptionPane.showOptionDialog(null, "Would you like to shuffle together or separately?",
-                "Shuffle Together or Separate.",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
-         }
-         
-         option++;       
-         System.out.println(option);     
-         
-         return option;
-    }
-    
-    //Method
+   //Method
     //Type: String
     //Name: createHMTMLName
     //Functionality: Rellies on information gathered from the createHTMLName method directly bellow
@@ -831,8 +842,61 @@ public class UnoWorkout {
             
             
     }
-	
-    //Method
+   //Method
+    //Type: void
+    //Name: dispTotals
+    //Functionality: writes total workouts for each player into the output file
+    //Parameters: player[] - an array of all the players, writer - the file writer,
+    //Utilizes player objects' totalPushup, totalLunge etc. values
+    public static void dispTotals(Player[] player, FileWriter writer) throws IOException {
+    	
+    	writer.write("\n\n----------TOTALS--------\n\n");
+    	
+    	for(int i = 0; i < player.length; i++)
+    	{
+    		writer.write("\nPlayer: " + (i+1));
+    		writer.write("\nTotal Pushups: " + player[i].totalPushup);
+    		writer.write("\nTotal Squats: " + player[i].totalSquat);
+    		writer.write("\nTotal Situps: " + player[i].totalSitup);
+    		writer.write("\nTotal Lunges: " + player[i].totalLunge);
+    		writer.write("\nTotal Burpes: " + player[i].totalBurpe);
+    	}
+    }
+   //Method
+    //Type: int
+    //Name: option
+    //Functionality: I created a few GUI based options and put them in a method for the player at the start.
+    //Asks them how many players, how many decks, and if they will be shuffling together or separately
+    //Parameters: int o - short for option. o basically means each of the many option dialog boxes to print and what to return.
+    //rather than creating several methods for each option, I though to number them in this manner instead. 
+    public static int option(int o){
+         int option=1;
+         if(o==1){
+            Integer[] options = {1, 2, 3};
+            option = JOptionPane.showOptionDialog(null, "How many decks?",
+                "Number of Decks",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,null);
+         
+         }
+         if(o==2){
+            Integer[] options = {1,2,3,4};
+            option = JOptionPane.showOptionDialog(null, "How many players?",
+                "Number of Players",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+         }
+         if(o==3){
+            String[] options = {"Together", "Separately"};
+            option = JOptionPane.showOptionDialog(null, "Would you like to shuffle together or separately?",
+                "Shuffle Together or Separate.",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+         }
+         
+         option++;       
+         System.out.println(option);     
+         
+         return option;
+    }
+   //Method
     //Type: String
     //Name: createHMTMLName
     //Functionality: Allows the user to name the file they wish to create.
@@ -847,8 +911,31 @@ public class UnoWorkout {
             System.out.println("Name of file: "+output+".txt" );
          return output;
     }
-    
+   
+   
+   
+   public static void main(String args[])throws IOException{ 
+        d = option(1);
+        p = option(2);
+        s = option(3);
+        output = createHTMLName();
+        
+        File myFile = new File(output+".txt");
+    	if(myFile.createNewFile()) {
+    		System.out.println("File created: " + myFile.getName());
+    		System.out.println("File created at: " + myFile.getAbsolutePath());
+    	}
+    	FileWriter writer = new FileWriter(output+".txt");
+    	writer.write("Workout");
+   
+      //dispTotals(player, writer); //it sort of "Saves As" on the file
+   
+        launch(args);
+        writer.close();
+   } 
 }
+
+
 
 //Class or Method: Class
 //Type: Card() - an object which holds two variables, val - for value, and col - for color (its a char variable)
@@ -933,6 +1020,12 @@ class Card {
     }
 
 }
+
+
+
+
+
+
 
 //Class or Method: Class
 //Type: Player() - an object which holds three variables, val - for value, and col - for color, and a for the player number (which we dont end up needing all too much).

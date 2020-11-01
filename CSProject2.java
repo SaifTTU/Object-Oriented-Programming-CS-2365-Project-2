@@ -28,14 +28,22 @@ import java.io.IOException;
 import java.io.FileWriter;
 
 public class CSProject2 extends Application { 
-   public static int p = 4; //number of players
+   public static int p = 1; //number of players. supposed to be 1. 
    public static int d = 1; //number of decks
    public static int s = 1; //way to shuffle together or separate
    public static int z = 1; //for the game loop
+   Player player = new Player();
+   Card cardArray[] = new Card[384];
+   
+   
    @Override 
    public void start(Stage stage) { 
       //Label label = new Label();
       Group group = new Group();
+      
+      for(int i=0;i<cardArray.length;i++){
+         cardArray[i] = new Card();
+      }
       
       Rectangle Uno[][] = new Rectangle[5][4];
       Text Una[][] = new Text[5][4]; //just named it something similar but this is the text array of the total values
@@ -69,29 +77,34 @@ public class CSProject2 extends Application {
             group.getChildren().add(Uno[i][j]); 
          }
       }
-      
+      String value;
       for(int j=0; j<(p);j++){ //printing text
          for(int i=0;i<(5);i++){
             Una[i][j].setX(164+ (100.0f*i));
             Una[i][j].setY(140+ (100.0f*j));
             if(i==0){
-               Una[i][j].setText("1");
+               value = Integer.toString(player.totalPushup);
+               Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);  
             }
             else if(i==1){
-               Una[i][j].setText("2");
+               value = Integer.toString(player.totalLunge);
+               Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);
             }
             else if(i==2){
-               Una[i][j].setText("3");
+               value = Integer.toString(player.totalSquat);
+               Una[i][j].setText(value);
                Una[i][j].setFill(Color.BLACK); //because if its Yellow, text should be black
             }
             else if(i==3){
-               Una[i][j].setText("4");
+               value = Integer.toString(player.totalSitup);
+               Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);
             }
             else if(i==4){
-               Una[i][j].setText("5");
+               value = Integer.toString(player.totalBurpe);
+               Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);
             }
             Una[i][j].setFont(new Font(20));
@@ -135,6 +148,67 @@ public class CSProject2 extends Application {
         launch(args);
    } 
 }
+
+
+
+//Class or Method: Class
+//Type: Player() - an object which holds three variables, val - for value, and col - for color, and a for the player number (which we dont end up needing all too much).
+//there can be a total of 4 players created with this class in our version of the game.
+//additionally it contains the totaling int variables: 
+//totalPushup, totalSitup, totalSquat, totallunge, totalBurpe - all set to 0
+//acText() - the player hand is so small (only 7 cards), we used two primitive arrays to represent the hands (which we were careful not to mix up their variables at any
+//point, however it essentially will accomplish the same task that it does in Card(), whenever given a number between 11 and 15 it will return namne of the actionCard
+
+//Name: createHMTMLName
+//Functionality: Allows the user to name the file they wish to create.
+class Player {
+    int a; //player number
+    int val[] = new int[7]; //card array with numbers
+    char col[] = new char[7]; //card array with color chars
+
+    int totalPushup=9;
+	 int totalSitup=1;
+	 int totalSquat=3;
+	 int totalLunge=4;
+    int totalBurpe=2;
+
+
+     String acText; //actionCard text
+     int value = 11;
+     public String acText()
+     {
+        switch(value){
+            case 11:
+                //System.out.print("Red");
+                acText=("Skip");
+                break;
+            case 12:
+                //System.out.print("Blue");
+                acText=("Draw 2");
+                break;
+            case 13:
+                //System.out.print("Yellow");
+                acText=("Reverse");
+                break;
+            case 14:
+                //System.out.print("Green");
+                acText=("Wild");
+                break;
+            case 15:
+                //System.out.print("Green");
+                acText=("Draw 4");
+                break;
+            //default:
+                //System.out.print("black");
+                //acText=("Regular");
+         }
+         return acText;
+      }
+}
+
+
+
+
 
 
 

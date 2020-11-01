@@ -148,7 +148,7 @@ public class CSProject2 extends Application {
      
      proceed.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 1
              @Override public void handle(ActionEvent e) {
-                    if(cardArray.length>7){
+                    if(cardArray.length>=7){
                        cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
                        System.out.println("\nNew Deck: ");
                        displayDeck(cardArray);

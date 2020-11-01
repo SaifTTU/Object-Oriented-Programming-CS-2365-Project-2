@@ -572,6 +572,7 @@ public class CSProject2 extends Application {
                      if(takeARest ==true){
                         System.out.print("\n(Take a two minute rest)");
                      }
+                     takeARest=false;
                      
                //} 
                
@@ -1022,4 +1023,3 @@ class Player {
          return acText;
       }
 }
-

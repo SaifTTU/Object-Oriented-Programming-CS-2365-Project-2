@@ -160,7 +160,7 @@ public class UnoWorkout extends Application {
                        //showWorkOut(player);
                        player=sortHand(player);
                        player=actionCard(player,cardArray);
-                       cardArray=containsReverse(cardArray, p);
+                       //cardArray=containsReverse(cardArray, p);
                        player=showWorkOut(player);
                        
                        

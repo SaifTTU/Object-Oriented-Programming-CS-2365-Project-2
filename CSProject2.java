@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
 
-public class CSProject2 extends Application { 
+public class UnoWorkout extends Application { 
    public static int p = 4; //number of players. supposed to be 1. 
    public static int d = 1; //number of decks
    public static int s = 1; //way to shuffle together or separate
@@ -41,9 +41,10 @@ public class CSProject2 extends Application {
     		System.out.println("File created: " + myFile.getName());
     		System.out.println("File created at: " + myFile.getAbsolutePath());
     	}
-    	FileWriter writer = new FileWriter(output+".txt");
+    	FileWriter writer = new FileWriter(myFile.getAbsolutePath());
     	writer.write("Workout");
 
+    	
    
       //Label label = new Label();
       Group group = new Group();
@@ -148,6 +149,7 @@ public class CSProject2 extends Application {
      
      proceed.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 1
              @Override public void handle(ActionEvent e) {
+                 
                     if(cardArray.length>=7){
                        cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
                        System.out.println("\nNew Deck: ");
@@ -159,25 +161,58 @@ public class CSProject2 extends Application {
                        player=actionCard(player,cardArray);
                        cardArray=containsReverse(cardArray, p);
                        player=showWorkOut(player);
-                       }
+                    }
+
+                    
+                    
+                    
+                    //System.out.println("\n1. Proceed... (Exit = 0)");
+                    
+                    //z = sc.nextInt();
+                    
                     if(cardArray.length<7){
-                       printTot(player);
-                       System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
-                       //z =0;                
-                     }
+                    printTot(player);
+                    System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
+                    //z =0;                
+                    }
         }
       });
       
       end.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 2
-             @Override public void handle(ActionEvent e) {
-                  printTot(player);
-                 
-                	//dispTotals(player, writer); //it sort of "Saves As" on the file
-        
-                  //writer.close();
+             @Override public void handle(ActionEvent e){
+            	printTot(player);
+            	 
+            	try {
+            	FileWriter writer2 = new FileWriter(myFile.getAbsolutePath());
+            	 
+                System.out.println(player[0].totalBurpe);
+            	writer2.write("Work Out");          	 
+
+            	writer2.write("\n\n----------TOTALS--------\n\n");
+              	
+              	for(int i = 0; i < player.length; i++)
+              	{
+              		writer2.write("\nPlayer: " + (i+1));
+              		writer2.write("\nTotal Pushups: " + player[i].totalPushup);
+              		writer2.write("\nTotal Squats: " + player[i].totalSquat);
+              		writer2.write("\nTotal Situps: " + player[i].totalSitup);
+              		writer2.write("\nTotal Lunges: " + player[i].totalLunge);
+              		writer2.write("\nTotal Burpes: " + player[i].totalBurpe);
+              	}
+              	
+              	writer2.close();} catch (Exception e1)
+            	{
+              		System.out.println("Caught writer 2 errror...");
+            	}
+            	  
                   System.out.println("File created at: " + myFile.getAbsolutePath());
                   
                   createHTML(output); //output = a string with the text name, this method is going to look for it
+
+                  
+                
+                  
+                  
     
              }
         
@@ -208,7 +243,10 @@ public class CSProject2 extends Application {
       //Displaying the contents of the stage 
       stage.show(); 
       
-      
+     //dispTotals(player ,writer);
+      //System.out.println(player[1].totalPushup + " Total pushups");
+  	
+  	  writer.close();
    }      
    
    //Method
@@ -228,7 +266,9 @@ public class CSProject2 extends Application {
                for(int i=0;i<oneDeck.length;i++){
                   oneDeck[i] = new Card(); //first we created a test deck called one deck and then set the created deck equal to card 
                   card[i*j] = new Card(); //and then we'll set card equal to cardArray and return cardArray
+                  //for(int j=0;j<4;j++){
                   oneDeck[i].setData(val[i%29],col[i/29]); //utilizing modulus and char division to create the exam dimensions of real deck
+                  //System.out.print(oneDeck[i].a+""+oneDeck[i].col+", ");
                   card[i*j]=oneDeck[i];
                   if((card[i*j].val)<=10)
                      System.out.print(card[i*j].val+""+card[i*j].col+", ");
@@ -236,31 +276,51 @@ public class CSProject2 extends Application {
                   
                   
                   if(card[i*j].val==11){//setup the skip card
+                     //card[i*j].a=0;
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[Skip], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==12){//setup the draw 2 card
+                     //card[i*j].a=0;
+                     //card[i*j].col='D';
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[D2], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==13){//setup the reverse card
+                     //card[i*j].a=0;
+                     //card[i*j].col='E';
+                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[Reverse], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==14){//setup the wild card
+                     //card[i*j].a=0;
                      System.out.print("[WILD], ");
+                     //card[i*j].col='W';
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==15){//setup the wild card
+                     //card[i*j].col='F';
+                     //card[i*j].val=4;
                      System.out.print("[WILD D4], ");
                      card[i*j].actionCard =true;
                   }
+                  
+                  //E is for reverse (because R was already taken)
                }
             }
          cardArray=card;
          return cardArray;
     }
 
+    public static void updateTotals(Player[] player )
+    {
+    	
+    }
+    
+    
    //Method
     //Type: Card object
     //Name: shuffleDeck
@@ -553,7 +613,6 @@ public class CSProject2 extends Application {
                      if(takeARest ==true){
                         System.out.print("\n(Take a two minute rest)");
                      }
-                     takeARest=false;
                      
                //} 
                
@@ -668,8 +727,43 @@ public class CSProject2 extends Application {
         newArray[cardArray.length] = fakeCard;
         return newArray;
     }
-
-    
+   //Method
+    //Type: Card[]
+    //Name: contains Reverse
+    //Functionality: adds cards back to card[] because previous version did not add to back of deck as it was a Player[] not a Card[]
+   public static Card[] containsReverse(Card[] cardArray, int p){
+         int n;
+         for(int i=0;i<p;i++){
+            for(int j=0;j<7;j++){
+               n=((j)+(7*i));
+               if(cardArray[n].val==11){
+                  System.out.println(cardArray[n].col+" Reverse Detected in "+ (i+1)+"'s hand."); //couldnt print colText because color had to be removed?
+                  for(int k=0;k<7;k++){
+                     if(cardArray[n].col==cardArray[((k+n)-1)].col && cardArray[((k+n)-1)].val<11){
+                        //System.out.println("Card "+ cardArray[((k+n)-1)].col+""+cardArray[((k+n)-1)].val+" added back to the back of the deck");
+                        cardArray=addTo(cardArray, cardArray[((k+n)-1)]);
+                     }
+                  }
+               }
+            }
+         }
+         
+         return cardArray;
+   }    
+   public static void printTot(Player[] player){
+      System.out.println("\nTotals");
+      System.out.println("--------------------------------------------------");
+      for(int i=0;i<player.length;i++){
+          System.out.println("Player: " + (i+1));
+          System.out.println("\tPushups: " + player[i].totalPushup);
+          System.out.println("\tSitups: " + player[i].totalSitup);
+          System.out.println("\tSquats: " + player[i].totalSquat);
+          System.out.println("\tLunges: " + player[i].totalLunge);
+          System.out.println("\tBurpes: " + player[i].totalBurpe);
+      }
+      System.out.println("--------------------------------------------------");
+   }
+   
     //Method
     //Type: Player object
     //Name: draw2
@@ -760,7 +854,7 @@ public class CSProject2 extends Application {
     		writer.write("\nTotal Squats: " + player[i].totalSquat);
     		writer.write("\nTotal Situps: " + player[i].totalSitup);
     		writer.write("\nTotal Lunges: " + player[i].totalLunge);
-         writer.write("\nTotal Burpes: " + player[i].totalBurpe);
+    		writer.write("\nTotal Burpes: " + player[i].totalBurpe);
     	}
     }
    //Method
@@ -813,47 +907,6 @@ public class CSProject2 extends Application {
          return output;
     }
    
-   //Method
-    //Type: Card[]
-    //Name: contains Reverse
-    //Functionality: adds cards back to card[] because previous version did not add to back of deck as it was a Player[] not a Card[]
-   public static Card[] containsReverse(Card[] cardArray, int p){
-         int n;
-         for(int i=0;i<p;i++){
-            for(int j=0;j<7;j++){
-               n=((j)+(7*i));
-               if(cardArray[n].val==11){
-                  System.out.println(cardArray[n].col+" Reverse Detected in "+ (i+1)+"'s hand."); //couldnt print colText because color had to be removed?
-                  for(int k=0;k<7;k++){
-                     if(cardArray[n].col==cardArray[((k+n)-1)].col && cardArray[((k+n)-1)].val<11){
-                        //System.out.println("Card "+ cardArray[((k+n)-1)].col+""+cardArray[((k+n)-1)].val+" added back to the back of the deck");
-                        cardArray=addTo(cardArray, cardArray[((k+n)-1)]);
-                     }
-                  }
-               }
-            }
-         }
-         
-         return cardArray;
-   }
-   
-   public static void printTot(Player[] player){
-      System.out.println("\nTotals");
-      System.out.println("--------------------------------------------------");
-      for(int i=0;i<player.length;i++){
-          System.out.println("Player: " + (i+1));
-          System.out.println("\tPushups: " + player[i].totalPushup);
-          System.out.println("\tSitups: " + player[i].totalSitup);
-          System.out.println("\tSquats: " + player[i].totalSquat);
-          System.out.println("\tLunges: " + player[i].totalLunge);
-          System.out.println("\tBurpes: " + player[i].totalBurpe);
-      }
-      System.out.println("--------------------------------------------------");
-   }
-   
-   
-   
-   
    
    
    public static void main(String args[])throws IOException{ 
@@ -873,6 +926,7 @@ public class CSProject2 extends Application {
       //dispTotals(player, writer); //it sort of "Saves As" on the file
    
         launch(args);
+        writer.close();
    } 
 }
 

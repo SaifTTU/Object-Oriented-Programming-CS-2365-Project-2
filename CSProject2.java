@@ -149,6 +149,7 @@ public class CSProject2 extends Application {
      proceed.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 1
              @Override public void handle(ActionEvent e) {
                  
+                    
                     cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
                     System.out.println("\nNew Deck: ");
                     displayDeck(cardArray);
@@ -157,6 +158,8 @@ public class CSProject2 extends Application {
                     //showWorkOut(player);
                     player=sortHand(player);
                     player=actionCard(player,cardArray);
+                    if(cardArray.length>7)
+                       cardArray=containsReverse(cardArray, p);
                     player=showWorkOut(player);
                     //System.out.println("\n1. Proceed... (Exit = 0)");
                     
@@ -828,6 +831,31 @@ public class CSProject2 extends Application {
          return output;
     }
    
+   public static Card[] containsReverse(Card[] cardArray, int p){
+         int n;
+         for(int i=0;i<p;i++){
+            for(int j=0;j<7;j++){
+               n=((j)+(7*i));
+               if(cardArray[n].val==11){
+                  System.out.println(cardArray[n].col+" Reverse Detected in "+ (i+1)+"'s hand."); //couldnt print colText because color had to be removed?
+                  for(int k=0;k<7;k++){
+                     if(cardArray[n].col==cardArray[((k+n)-1)].col && cardArray[((k+n)-1)].val<11){
+                        //System.out.println("Card "+ cardArray[((k+n)-1)].col+""+cardArray[((k+n)-1)].val+" added back to the back of the deck");
+                        cardArray=addTo(cardArray, cardArray[((k+n)-1)]);
+                     }
+                  }
+               }
+            }
+         }
+         
+         return cardArray;
+   }
+   
+   
+   
+   
+   
+   
    public static void main(String args[])throws IOException{ 
         d = option(1);
         p = option(2);
@@ -994,7 +1022,4 @@ class Player {
          return acText;
       }
 }
-
-
-
 

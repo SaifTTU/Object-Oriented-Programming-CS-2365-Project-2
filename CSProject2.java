@@ -32,6 +32,7 @@ public class CSProject2 extends Application {
    
    Card cardArray[] = new Card[384];
    
+   
    @Override 
    public void start(Stage stage) throws IOException{ 
       //String output = createHTMLName();
@@ -147,24 +148,18 @@ public class CSProject2 extends Application {
      
      proceed.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 1
              @Override public void handle(ActionEvent e) {
-                 
-                    
-                    cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
-                    System.out.println("\nNew Deck: ");
-                    displayDeck(cardArray);
-                    updateHand(player,cardArray,p);
-                    showHand(cardArray, p);
-                    //showWorkOut(player);
-                    player=sortHand(player);
-                    player=actionCard(player,cardArray);
-                    
-                    if(cardArray.length>7)
+                    if(cardArray.length>7){
+                       cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
+                       System.out.println("\nNew Deck: ");
+                       displayDeck(cardArray);
+                       updateHand(player,cardArray,p);
+                       showHand(cardArray, p);
+                       //showWorkOut(player);
+                       player=sortHand(player);
+                       player=actionCard(player,cardArray);
                        cardArray=containsReverse(cardArray, p);
-                    player=showWorkOut(player);
-                    //System.out.println("\n1. Proceed... (Exit = 0)");
-                    
-                    //z = sc.nextInt();
-                    //printTot(player);
+                       player=showWorkOut(player);
+                       }
                     if(cardArray.length<7){
                        printTot(player);
                        System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
@@ -233,9 +228,7 @@ public class CSProject2 extends Application {
                for(int i=0;i<oneDeck.length;i++){
                   oneDeck[i] = new Card(); //first we created a test deck called one deck and then set the created deck equal to card 
                   card[i*j] = new Card(); //and then we'll set card equal to cardArray and return cardArray
-                  //for(int j=0;j<4;j++){
                   oneDeck[i].setData(val[i%29],col[i/29]); //utilizing modulus and char division to create the exam dimensions of real deck
-                  //System.out.print(oneDeck[i].a+""+oneDeck[i].col+", ");
                   card[i*j]=oneDeck[i];
                   if((card[i*j].val)<=10)
                      System.out.print(card[i*j].val+""+card[i*j].col+", ");
@@ -243,39 +236,25 @@ public class CSProject2 extends Application {
                   
                   
                   if(card[i*j].val==11){//setup the skip card
-                     //card[i*j].a=0;
-                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[Skip], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==12){//setup the draw 2 card
-                     //card[i*j].a=0;
-                     //card[i*j].col='D';
-                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[D2], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==13){//setup the reverse card
-                     //card[i*j].a=0;
-                     //card[i*j].col='E';
-                     //card[i*j].col=Character.toLowerCase(card[i*j].col);
                      System.out.print(card[i*j].col+"[Reverse], ");
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==14){//setup the wild card
-                     //card[i*j].a=0;
                      System.out.print("[WILD], ");
-                     //card[i*j].col='W';
                      card[i*j].actionCard =true;
                   }
                   if(card[i*j].val==15){//setup the wild card
-                     //card[i*j].col='F';
-                     //card[i*j].val=4;
                      System.out.print("[WILD D4], ");
                      card[i*j].actionCard =true;
                   }
-                  
-                  //E is for reverse (because R was already taken)
                }
             }
          cardArray=card;

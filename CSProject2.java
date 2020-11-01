@@ -158,22 +158,25 @@ public class CSProject2 extends Application {
                     //showWorkOut(player);
                     player=sortHand(player);
                     player=actionCard(player,cardArray);
+                    
                     if(cardArray.length>7)
                        cardArray=containsReverse(cardArray, p);
                     player=showWorkOut(player);
                     //System.out.println("\n1. Proceed... (Exit = 0)");
                     
                     //z = sc.nextInt();
-                    
+                    //printTot(player);
                     if(cardArray.length<7){
-                    System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
-                    //z =0;                
-             }
+                       printTot(player);
+                       System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
+                       //z =0;                
+                     }
         }
       });
       
       end.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 2
              @Override public void handle(ActionEvent e) {
+                  printTot(player);
                  
                 	//dispTotals(player, writer); //it sort of "Saves As" on the file
         
@@ -832,6 +835,10 @@ public class CSProject2 extends Application {
          return output;
     }
    
+   //Method
+    //Type: Card[]
+    //Name: contains Reverse
+    //Functionality: adds cards back to card[] because previous version did not add to back of deck as it was a Player[] not a Card[]
    public static Card[] containsReverse(Card[] cardArray, int p){
          int n;
          for(int i=0;i<p;i++){
@@ -850,6 +857,20 @@ public class CSProject2 extends Application {
          }
          
          return cardArray;
+   }
+   
+   public static void printTot(Player[] player){
+      System.out.println("\nTotals");
+      System.out.println("--------------------------------------------------");
+      for(int i=0;i<player.length;i++){
+          System.out.println("Player: " + (i+1));
+          System.out.println("\tPushups: " + player[i].totalPushup);
+          System.out.println("\tSitups: " + player[i].totalSitup);
+          System.out.println("\tSquats: " + player[i].totalSquat);
+          System.out.println("\tLunges: " + player[i].totalLunge);
+          System.out.println("\tBurpes: " + player[i].totalBurpe);
+      }
+      System.out.println("--------------------------------------------------");
    }
    
    

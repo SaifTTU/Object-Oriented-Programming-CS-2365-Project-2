@@ -28,6 +28,7 @@ public class UnoWorkout extends Application {
    public static int s = 1; //way to shuffle together or separate
    public static int z = 1; //for the game loop
    public static String output;
+   public String value;
    Player player[] = new Player[p];
    
    Card cardArray[] = new Card[384];
@@ -105,40 +106,40 @@ public class UnoWorkout extends Application {
             group.getChildren().add(Uno[i][j]); 
          }
       }
-      String value;
-      for(int j=0; j<(p);j++){ //printing text
-         for(int i=0;i<(5);i++){
-            Una[i][j].setX(164+ (100.0f*i));
-            Una[i][j].setY(140+ (100.0f*j));
-            if(i==0){
-               value = Integer.toString(player[0].totalPushup);
-               Una[i][j].setText(value);
-               Una[i][j].setFill(Color.WHITE);  
-            }
-            else if(i==1){
-               value = Integer.toString(player[0].totalLunge);
-               Una[i][j].setText(value);
-               Una[i][j].setFill(Color.WHITE);
-            }
-            else if(i==2){
-               value = Integer.toString(player[0].totalSquat);
-               Una[i][j].setText(value);
-               Una[i][j].setFill(Color.BLACK); //because if its Yellow, text should be black
-            }
-            else if(i==3){
-               value = Integer.toString(player[0].totalSitup);
-               Una[i][j].setText(value);
-               Una[i][j].setFill(Color.WHITE);
-            }
-            else if(i==4){
-               value = Integer.toString(player[0].totalBurpe);
-               Una[i][j].setText(value);
-               Una[i][j].setFill(Color.WHITE);
-            }
-            Una[i][j].setFont(new Font(20));
-            group.getChildren().add(Una[i][j]); 
-         }
-      }
+         //String value;
+                  for(int j=0; j<(p);j++){ //printing text
+                     for(int i=0;i<(5);i++){
+                        Una[i][j].setX(164+ (100.0f*i));
+                        Una[i][j].setY(140+ (100.0f*j));
+                        if(i==0){
+                           value = Integer.toString(player[j].currentPushup);
+                           Una[i][j].setText(value);
+                           Una[i][j].setFill(Color.WHITE);  
+                        }
+                        if(i==1){
+                           value = Integer.toString(player[j].currentLunge);
+                           Una[i][j].setText(value);
+                           Una[i][j].setFill(Color.WHITE);
+                        }
+                        if(i==2){
+                           value = Integer.toString(player[j].currentSquat);
+                           Una[i][j].setText(value);
+                           Una[i][j].setFill(Color.BLACK); //because if its Yellow, text should be black
+                        }
+                        if(i==3){
+                           value = Integer.toString(player[j].currentSitup);
+                           Una[i][j].setText(value);
+                           Una[i][j].setFill(Color.WHITE);
+                        }
+                        else if(i==4){
+                           value = Integer.toString(player[j].currentBurpe);
+                           Una[i][j].setText(value);
+                           Una[i][j].setFill(Color.WHITE);
+                        }
+                        Una[i][j].setFont(new Font(20));
+                        group.getChildren().add(Una[i][j]); 
+                     }
+                  }
       
      Button proceed = new Button("Proceed");
      Button end = new Button("End");
@@ -161,6 +162,41 @@ public class UnoWorkout extends Application {
                        player=actionCard(player,cardArray);
                        cardArray=containsReverse(cardArray, p);
                        player=showWorkOut(player);
+                       
+                       
+                           for(int j=0; j<(p);j++){ //printing text
+                                 for(int i=0;i<(5);i++){
+                                    Una[i][j].setX(164+ (100.0f*i));
+                                    Una[i][j].setY(140+ (100.0f*j));
+                                    if(i==0){ //blue
+                                       value = Integer.toString(player[j].currentPushup);
+                                       Una[i][j].setText(value);
+                                    }
+                                    if(i==1){ //red
+                                       value = Integer.toString(player[j].currentLunge);
+                                       Una[i][j].setText(value);
+                                    }
+                                    if(i==2){ //yellow
+                                       value = Integer.toString(player[j].currentSquat);
+                                       Una[i][j].setText(value);
+                                    }
+                                    if(i==3){
+                                       value = Integer.toString(player[j].currentSitup);
+                                       Una[i][j].setText(value);
+                                    }
+                                    else if(i==4){
+                                       value = Integer.toString(player[j].currentBurpe);
+                                       Una[i][j].setText(value);
+                                    }
+                                    Una[i][j].setFont(new Font(20));
+                                    group.getChildren().remove(Una[i][j]);
+                                    group.getChildren().add(Una[i][j]); 
+                                 }
+                            } 
+
+                       
+                       
+                      
                     }
 
                     
@@ -171,9 +207,9 @@ public class UnoWorkout extends Application {
                     //z = sc.nextInt();
                     
                     if(cardArray.length<7){
-                    printTot(player);
-                    System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
-                    //z =0;                
+                       printTot(player);
+                       System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
+                       //z =0;                
                     }
         }
       });
@@ -448,6 +484,14 @@ public class UnoWorkout extends Application {
             return player;
         }
     }
+    
+    //Method
+    //Type: int
+    //Name: getWorkOut shows current hand 
+    //Parameters: 
+    
+    
+        
     //Method
     //Type: Player[] an object array of Player class - all of the players
     //Name: showWorkOut
@@ -519,11 +563,18 @@ public class UnoWorkout extends Application {
                if(draw2[3]==true)
                lunges=lunges*2;
                
-               player[i].totalSitup += situps; //I had had to change its location to appear after draw 2's occured
-               player[i].totalPushup += pushups; //cause before it was printing way too few and I think this is why
+               player[i].totalSitup += situps; 
+               player[i].totalPushup += pushups; 
                player[i].totalSquat += squats;
                player[i].totalLunge += lunges;
                player[i].totalBurpe += burpes;
+               
+               player[i].currentSitup = situps; 
+               player[i].currentPushup = pushups; 
+               player[i].currentSquat = squats;
+               player[i].currentLunge = lunges;
+               player[i].currentBurpe = burpes;
+               
                
                System.out.println("Pushups: "+ pushups );
                System.out.println("Squats: "+ squats );
@@ -535,6 +586,12 @@ public class UnoWorkout extends Application {
          
          return player; //returns "players" actually. (player[]) 
     }
+
+    
+    
+    
+    
+    
     //Method
     //Type: Player[] object array
     //Name: sortHand
@@ -754,7 +811,7 @@ public class UnoWorkout extends Application {
     //Type: Card[]
     //Parameter: Player[] player
     //Name: contains printTot
-    //Functionality: examines Player total values and displays them in the console output
+    //Functionality: examines Player total values and displays them in the console outpu
    public static void printTot(Player[] player){
       System.out.println("\nTotals");
       System.out.println("--------------------------------------------------");
@@ -1047,6 +1104,12 @@ class Player {
 	 int totalSquat=0;
 	 int totalLunge=0;
     int totalBurpe=0;
+    
+    int currentPushup = 0;
+    int currentSitup = 0;
+    int currentSquat = 0;
+    int currentLunge = 0;
+    int currentBurpe = 0;
 
 
      String acText; //actionCard text

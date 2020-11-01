@@ -22,18 +22,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
 
-
 public class CSProject2 extends Application { 
    public static int p = 4; //number of players. supposed to be 1. 
    public static int d = 1; //number of decks
    public static int s = 1; //way to shuffle together or separate
    public static int z = 1; //for the game loop
-   Player player = new Player();
+   Player player[] = new Player[p];
+   
    Card cardArray[] = new Card[384];
    
    
    @Override 
-   public void start(Stage stage) throws Exception{ 
+   public void start(Stage stage) throws IOException{ 
       //Label label = new Label();
       Group group = new Group();
       
@@ -41,6 +41,9 @@ public class CSProject2 extends Application {
       //"business logic" goes here
       for(int i=0;i<cardArray.length;i++){
          cardArray[i] = new Card();
+      }
+      for(int i=0;i<player.length;i++){
+         player[i] = new Player();
       }
       Card fakeCardArray[] = new Card[384];
       fakeCardArray=createDeck(3, fakeCardArray);
@@ -52,7 +55,7 @@ public class CSProject2 extends Application {
 
       }
       cardArray = shuffleDeck(cardArray);
-      //displayDeck(cardArray); //use this to display what the current deck looks like
+      displayDeck(cardArray); //use this to display what the current deck looks like
       showHand(cardArray, p); //
       
       //-----------------------------------------
@@ -96,27 +99,27 @@ public class CSProject2 extends Application {
             Una[i][j].setX(164+ (100.0f*i));
             Una[i][j].setY(140+ (100.0f*j));
             if(i==0){
-               value = Integer.toString(player.totalPushup);
+               value = Integer.toString(player[0].totalPushup);
                Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);  
             }
             else if(i==1){
-               value = Integer.toString(player.totalLunge);
+               value = Integer.toString(player[0].totalLunge);
                Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);
             }
             else if(i==2){
-               value = Integer.toString(player.totalSquat);
+               value = Integer.toString(player[0].totalSquat);
                Una[i][j].setText(value);
                Una[i][j].setFill(Color.BLACK); //because if its Yellow, text should be black
             }
             else if(i==3){
-               value = Integer.toString(player.totalSitup);
+               value = Integer.toString(player[0].totalSitup);
                Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);
             }
             else if(i==4){
-               value = Integer.toString(player.totalBurpe);
+               value = Integer.toString(player[0].totalBurpe);
                Una[i][j].setText(value);
                Una[i][j].setFill(Color.WHITE);
             }
@@ -131,6 +134,45 @@ public class CSProject2 extends Application {
      end.setLayoutX(550.0f); 
      proceed.setLayoutY(75+ (125.0f*p));  //like the setX for buttons
      end.setLayoutY(75+ (125.0f*p)); 
+     
+     proceed.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 1
+             @Override public void handle(ActionEvent e) {
+                 
+                    cardArray = removeFrom(cardArray, p, 7); //removing cards*numberof Players from the top of the deck. necessary!
+                    System.out.println("\nNew Deck: ");
+                    displayDeck(cardArray);
+                    updateHand(player,cardArray,p);
+                    showHand(cardArray, p);
+                    //showWorkOut(player);
+                    player=sortHand(player);
+                    player=actionCard(player,cardArray);
+                    player=showWorkOut(player);
+                    //System.out.println("\n1. Proceed... (Exit = 0)");
+                    
+                    //z = sc.nextInt();
+                    
+                    if(cardArray.length<7){
+                    System.out.print("(Out of cards. \n\n\tEnter 0 to save the results!!!!\n\n) \n");
+                    //z =0;
+                    
+                    
+                    
+             }
+        }
+      });
+      
+      end.setOnAction(new EventHandler<ActionEvent>() { //BUTTON 2
+             @Override public void handle(ActionEvent e) {
+                 
+                	
+             }
+        
+      });
+     
+     
+     
+     
+     
      
      
      
@@ -272,7 +314,457 @@ public class CSProject2 extends Application {
             }
         }
     }
-   
+    
+   //Class or Method: Method
+    //Type: void
+    //Name: displayDeck
+    //Functionality: outputs every element in the array in the order it is given
+    //Parameters: cardArray
+    //Utilizes card objects' showData() method to display value int and color char
+    public static void displayDeck(Card[] cardArray) {
+        for (int i = 0; i < cardArray.length; i++) {
+            cardArray[i].showData();
+        }
+    }
+    
+    //Method
+    //Type: Card[] object array - returns the entire deck 
+    //Name: removeFrom
+    //Functionality: removes several cards from the front of the deck at a time, based on how many players there are
+    //so if there are 3 players, remove 3*7 cards from the deck and return the new deck
+    //Parameters: cardArray - the deck, people - the number of players, hand - the number of cards in the players hand (it is always 7)
+    public static Card[] removeFrom(Card[] cardArray, int people, int hand) {
+        System.out.println("\nRemoving the following " + (people * 7) + " cards from the top of the deck: ");
+
+        int amountToRemove = people * hand;
+        try {
+            Card[] newArray = new Card[cardArray.length - amountToRemove];
+            for (int i = 0; i < amountToRemove; i++) {
+                System.out.print((cardArray[i].val) + "" + (cardArray[i].col) + ", ");
+            }
+            for (int i = 0; i < newArray.length; i++) {
+                newArray[i] = cardArray[i + amountToRemove];
+            }
+            return newArray;
+        } catch (Exception e) {
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            return cardArray;
+        }
+    }
+
+   //Method
+    //Type: Player[] object array - all players
+    //Name: updateHand
+    //Functionality: is needed to match the players hand to the right amount of cards in the deck
+    //Parameters: cardArray - the deck, player[] - Player(s), numberOfPlayers
+    public static Player[] updateHand(Player player[], Card[] cardArray, int numberOfPlayers) {
+       try {
+          for(int j=0; j<numberOfPlayers;j++){
+                for(int i=j*7; i<(player[j].col.length +j*7);i++){
+                     player[j].val[i%7]=cardArray[i].val;
+                     //System.out.print(cardArray[i].col);
+                     player[j].col[i%7]=cardArray[i].col;
+                }
+          }
+          return player;
+       }
+       catch (Exception e) {
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*            Out of cards! Take a short break and start again!                *");
+            //commented this out: but it prints what the total is in the textbox
+            /*for(int i=0;i<player.length;i++){
+            System.out.print("\n*                 Player "+(i+1)+"       "+player[i].totalPushup+"       "+player[i].totalSquat+"       "
+            +player[i].totalSitup+"       "+player[i].totalLunge+"      "+player[i].totalBurpe+"          *");
+            } */
+            System.out.print("\n*                    (Press 0 to See the Results!     )                       *");
+            System.out.print("\n*                                                                             *");
+            System.out.print("\n*                                                                             *");
+            return player;
+        }
+    }
+    //Method
+    //Type: Player[] an object array of Player class - all of the players
+    //Name: showWorkOut
+    //Functionality: shows the workout of the current turn for all players.
+    //Parameters: cardArray - player[] - all players
+    public static Player[] showWorkOut(Player[] player){
+         int pushups; //blue
+         int squats; //yellow
+         int situps; //red
+         int lunges; //green
+         int burpes;
+         boolean[] draw2 = { false, false, false, false};
+         for(int i=0; i<player.length;i++){
+               pushups = 0; //blue
+               squats = 0; //yellow
+               situps = 0; //red
+               lunges = 0; //green
+               burpes = 0; //wild cards
+               System.out.println("\nPlayer "+(i+1)+":"); 
+               for(int j=0; j<player[i].val.length; j++){
+                 if(player[i].val[j]<11)
+                 {
+                     if(player[i].col[j]=='R'){
+                           //System.out.println(player[i].val[j]); //Moved this towards the bottom underneath the draw 2 method (its still in for loop) (it still works)
+                           situps = situps + player[i].val[j];
+                           //player[i].totalSitup += situps;
+                        }
+                     if(player[i].col[j]=='B'){
+                           pushups = pushups + player[i].val[j]; 
+                           //player[i].totalPushup += pushups;
+                        }
+                     if(player[i].col[j]=='Y'){
+                           squats = squats + player[i].val[j];
+                           //player[i].totalSquat += squats;
+                        }
+                     if(player[i].col[j]=='G'){
+                           lunges = lunges + player[i].val[j]; 
+                           //player[i].totalLunges += lunges;
+                        }
+                  }
+                  if(player[i].val[j]==12){
+                        if(player[i].col[j]=='B')
+                           draw2[0]=true;
+                        if(player[i].col[j]=='Y')
+                           draw2[1]=true;
+                        if(player[i].col[j]=='R')
+                           draw2[2]=true;
+                        if(player[i].col[j]=='G')
+                           draw2[3]=true;
+                  }
+                  if(player[i].val[j]==14){
+                        burpes = burpes + 4; //if its a Wild Card
+                        
+
+                  }
+                  if(player[i].val[j]==15){
+                        burpes = burpes * 4; //if its a Wild Draw 4
+                  } 
+                  
+               }
+               
+               
+               if(draw2[0]==true)
+               pushups=pushups*2;
+               if(draw2[1]==true)
+               squats=squats*2;   
+               if(draw2[2]==true)
+               situps=situps*2;   
+               if(draw2[3]==true)
+               lunges=lunges*2;
+               
+               player[i].totalSitup += situps; //I had had to change its location to appear after draw 2's occured
+               player[i].totalPushup += pushups; //cause before it was printing way too few and I think this is why
+               player[i].totalSquat += squats;
+               player[i].totalLunge += lunges;
+               player[i].totalBurpe += burpes;
+               
+               System.out.println("Pushups: "+ pushups );
+               System.out.println("Squats: "+ squats );
+               System.out.println("Situps: "+ situps );
+               System.out.println("Lunges: "+ lunges );
+               if(burpes!=0) //It only prints Burpes if they have them. Should we always include it? Idk kinda liked 4 displayed by default better.
+               System.out.println("Burpes: "+ burpes );
+         }
+         
+         return player; //returns "players" actually. (player[]) 
+    }
+    //Method
+    //Type: Player[] object array
+    //Name: sortHand
+    //Functionality: sorts hand
+    //utlizes bubble sort algorithm (4 times) to sort player's hand based on value and color
+    //(we did this 4 times because the player array has separate array variables instead of char arrays, because this
+    //made it much easier to call them in several parts of our project, the 2nd and 4th loop put the respective col and val back with their corrrect corresponding value or color
+    //Parameters: player[] object array
+    public static Player[] sortHand(Player[] player) {  
+        int n = 7;  
+        boolean takeARest = false;
+        int temp = 0; 
+        char tempChar = 'B'; 
+            for(int k=0;k<player.length;k++){
+            
+               
+              
+               for(int i=0; i < n; i++){  //sorting numbers
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].val[j-1] > player[k].val[j]){  
+                                        
+                                       temp = player[k].val[j-1];  
+                                       player[k].val[j-1] = player[k].val[j];  
+                                       player[k].val[j] = temp;  
+                                       
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;
+                               }  
+                                
+                       }  
+               }
+               
+               for(int i=0; i < n; i++){  //sorting colors
+                       for(int j=1; j < (n-i); j++){  
+                                if(player[k].col[j-1] > player[k].col[j]){  
+                                        
+                                       tempChar = player[k].col[j-1];  
+                                       player[k].col[j-1] = player[k].col[j];  
+                                       player[k].col[j] = tempChar;  
+                                       
+                                       temp = player[k].val[j-1];  
+                                       player[k].val[j-1] = player[k].val[j];  
+                                       player[k].val[j] = temp;
+                               }  
+                                
+                       }  
+               }
+               
+               System.out.print("\nNew Player "+(k+1)+"'s Hand: ");
+               //for(int i=0; i < player.length; i++){
+                     for(int j=0; j < n; j++){ 
+                           if(player[k].val[j]<11&&player[k].val[j]!=0){
+                              System.out.print(" "+player[k].val[j]+""+player[k].col[j]);
+                              }
+                           else if(player[k].val[j]==11){ //doesnt work yet, I'd have to fix it later
+                              System.out.print("  "+player[k].col[j]+" Skip ");
+                              }
+                           else if(player[k].val[j]==12){
+                              System.out.print("  "+player[k].col[j]+" Draw 2 ");
+                              }
+                           else if(player[k].val[j]==13){
+                              System.out.print("  "+player[k].col[j]+" Reverse ");
+                              }
+                          else if(player[k].val[j]==14){
+                              System.out.print(" WILD");
+                              }
+                          else if(player[k].val[j]==15){
+                              System.out.print("  WILD Draw 4  ");
+                              }
+                          else if(player[k].val[j]==0){
+                              takeARest=true;
+                              }
+                              
+                     }
+                     if(takeARest ==true){
+                        System.out.print("\n(Take a two minute rest)");
+                     }
+                     
+               //} 
+               
+          }
+          return player;
+  
+    }
+    //Method
+    //Type: Player object array
+    //Name: actionCard
+    //Functionality: scans players hand for action cards and modifies the values, deck, and hand of the player accordingly
+    //Parameters: cardArray - the deck of all cards, player - an array of all player objects
+    //uses several methods within method based upon what value a certain player card has, which includes 11, Skip, 12, Draw2, 13, Reverse, 14, Wild, 15 Wild Draw 4
+    public static Player[] actionCard(Player[] player, Card[] cardArray){
+         //String curAct; //current Action
+         int value = 0;
+         boolean exists = false; //if an action card is in a players hand this becomes true
+         
+         for(int j=0;j<player.length;j++){
+               System.out.print("\nPlayer "+(j+1)+" has ");
+               for(int i=0;i<player[j].val.length;i++){
+                    if(player[j].val[i]>10){
+                        exists = true;
+                        player[j].value=player[j].val[i];
+                              switch(player[j].val[i]){
+                                    case 11:
+                                        player[j]=skip(player[j],player[j].col[i]);
+                                        System.out.print("a "+player[j].col[i]+" Skip card, (Skip all cards of this color), "); //removes
+                                        //System.out.print("(Skip: all "+player[j].col[i]+" card will be removed from this round)");
+                                        //System.out.print(", ");
+                                        break;
+                                    case 12:
+                                        
+                                        System.out.print("a "+player[j].col[i]+"Draw 2 card, "); //doubles color
+                                        player[j]=draw2(player[j],player[j].col[i]);
+                                        break;
+                                    case 13:
+                                        
+                                        System.out.print("a "+player[j].col[i]+" Reverse card (Add all cards of this color back to the deck)"); //removes and adds to the bottom
+                                        player[j]=reverse(player[j],player[j].col[i],cardArray);
+                                        //System.out.print(" (Reverse: all "+player[j].col[i]+" card will be removed from this round and added to the bottom of the deck)");
+                                        System.out.print(", ");
+                                        break;
+                                    case 14:
+                                        System.out.print("a Wild card, +4 burpes, ");
+                                        break;
+                                    default:
+                                        System.out.print("a Wild Draw 4 card, *4 burpes,");
+                                }
+                    }  
+               }
+               if(exists==false){
+                  System.out.print(" no action cards");
+                  }
+                  exists=true;      
+         }
+         System.out.print("\n");
+         return player; //returns player array
+    }
+    
+	
+    //Method
+    //Type: Player object
+    //Name: skip
+    //Functionality: it deletes the value attributed to a specific color for a players entire hand. 
+    //Parameters: player object, col - color character
+    //since this method is called in the actionCard method we chose to call it individually and as such, could make this method work for 1 Player at a time
+    //instead of all the players in an array at once
+    public static Player skip(Player player, char col){ //rellies on actionCards method, does it one player at a time rather than all at once,
+         for(int i=0;i<player.val.length;i++){
+               if(col==player.col[i] /*&&player.val[i]<11 */ ){ //if its the same color and less than 11
+                     //System.out.print("\n[Card: "+player.val[i]+player.col[i]+" removed]");
+                     player.val[i]=0; //remove the value of this card
+                     }
+         }
+         return player; //returns player object
+    }
+    
+	
+    //Method
+    //Type: Player object
+    //Name: reverse
+    //Functionality: functions similar to skip, except it utilizes the addTo() method to add cards of a specific color to the back of the deck
+    //Parameters: player object, col - color character, cardArray - the entire deck whose values we are going to be manipulating when we add more to it
+    //Similarly deletes the value attributed to a color but we recreate the cardArray deck exactly as it was except it will have a certain number of new
+    //cards added to it based on the color
+    public static Player reverse(Player player, char col, Card[] cardArray){ 
+             for(int i=0;i<player.val.length;i++){
+               if(col==player.col[i]&&player.val[i]!=13 /*&&player.val[i]<11 */ ){ //if its the same color, not a reverse, and less than 11
+                     Card newCard = new Card();
+                     newCard.col=player.col[i];
+                     newCard.val=player.val[i];
+                     //System.out.print("\n[Card: "+player.val[i]+player.col[i]+" removed]");
+                     addTo(cardArray, newCard);
+                     player.val[i]=0; //remove the value of this card
+               }
+         }
+         return player; //returns player object
+    }
+    
+    //Method
+    //Type: Card[] object array - returns the entire deck essentially
+    //Name: addTo
+    //Functionality: adds 1 card to the back of the deck at a time
+    //Parameters: cardArray - the original deck, and a predifined card object fakeCard
+    public static Card[] addTo(Card[] cardArray, Card fakeCard) {
+        System.out.print(" [Adding " + fakeCard.val + "" + fakeCard.col + " to the back of the deck], ");
+        Card[] newArray = new Card[cardArray.length + 1];
+        for (int i = 0; i < cardArray.length; i++) {
+            newArray[i] = cardArray[i];
+        }
+        newArray[cardArray.length] = fakeCard;
+        return newArray;
+    }
+
+    
+    //Method
+    //Type: Player object
+    //Name: draw2
+    //Functionality: goes through the player hand and multiplies the total amount to add for workouts by two if the color is matched to the one given
+    //Parameters: player object, col - color character (we are given the color to look for in this case)
+    public static Player draw2(Player player, char col){ 
+         int total= 0;
+         for(int i=0;i<player.val.length;i++){
+               if(col==player.col[i] && player.val[i] != 12 ){
+                     //System.out.print("["+(2*player.val[i])+player.col[i]+"]");
+                     total = total + player.val[i]*2; 
+                     }
+                     //System.out.print("total: "+player.col[i]+total); 
+         }
+         System.out.print("**Double values for "+col+". Total "+col+" values becomes:"+total+"! **,"); 
+         return player; //returns player object
+    }
+
+    
+   //Method
+    //Type: String
+    //Name: createHMTMLName
+    //Functionality: Rellies on information gathered from the createHTMLName method directly bellow
+    //adds a new file with all the appropriate tags of an html file and then places lines
+    //from our created txt file, one by one as a separate "paragraph" entity
+    //and then saves the html so it all comes out looking nice.
+    public static void createHTML(String output){
+            String doctype = "<!DOCTYPE html>";
+            String html="<html>";
+            //String head="<head>";
+            //String _head="</head>";
+            String body="<body>";
+            //String heading_1="<h1>";
+            //String user_heading="THIS IS A TEST";
+            //String _heading_1="</h1>"; //changed it to _ for "close" heading
+            String paragraph = "<p>"; //I found that giving each of the tags a name like this really helped me mentally keep track of everything
+            String user_paragraph="This is a paragraph."; //since coding is all about abstraction, its better to abstract away the tags in a manner more easy to understand
+            String _paragraph = "</p>";//close paragraph
+            String _body="</body>"; //close body
+            String _html="</html>"; //close html
+            try {
+              //Filewriter writer = new Filewiter();
+              File myFile = new File(output+".html");
+              FileWriter writer = new FileWriter(output+".html");
+              
+              
+       	      writer.write(doctype);
+               writer.write(html);
+               writer.write(body);
+               //writer.write(paragraph);
+               /*for(int i = 0;i<(output+".txt").length();i++){
+                     writer.write(user_paragraph);
+               }*/
+               Scanner scanner = new Scanner(new File(output+".txt"));
+               while (scanner.hasNextLine()) {
+                  writer.write(paragraph);
+                  String line = scanner.nextLine();
+                  writer.write(line);
+                  writer.write(_paragraph);
+                  // process the line
+               }
+               
+               writer.write(_body);
+               writer.write(html);
+               System.out.println("\nHTML file created at: " + myFile.getAbsolutePath());
+               writer.close();
+            }
+            catch(IOException e) {
+              e.printStackTrace();
+            }
+            
+            
+    }
+   //Method
+    //Type: void
+    //Name: dispTotals
+    //Functionality: writes total workouts for each player into the output file
+    //Parameters: player[] - an array of all the players, writer - the file writer,
+    //Utilizes player objects' totalPushup, totalLunge etc. values
+    public static void dispTotals(Player[] player, FileWriter writer) throws IOException {
+    	
+    	writer.write("\n\n----------TOTALS--------\n\n");
+    	
+    	for(int i = 0; i < player.length; i++)
+    	{
+    		writer.write("\nPlayer: " + (i+1));
+    		writer.write("\nTotal Pushups: " + player[i].totalPushup);
+    		writer.write("\nTotal Squats: " + player[i].totalSquat);
+    		writer.write("\nTotal Situps: " + player[i].totalSitup);
+    		writer.write("\nTotal Lunges: " + player[i].totalLunge);
+         writer.write("\nTotal Burpes: " + player[i].totalBurpe);
+    	}
+    }
+
    
    public static void main(String args[])throws IOException{ 
         launch(args);
@@ -425,11 +917,6 @@ class Player {
          return acText;
       }
 }
-
-
-
-
-
 
 
 
